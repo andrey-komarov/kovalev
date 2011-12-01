@@ -1,5 +1,4 @@
 #include "fraction/fraction.h"
-
 fraction::fraction() : p(0), q(1) {}
 
 fraction::fraction(int p) : p(p), q(1) {}
@@ -7,9 +6,51 @@ fraction::fraction(int p) : p(p), q(1) {}
 static const size_t MANTISS = 52;
 static const size_t EXPONENT = 11;
 
+namespace
+{
+
+const size_t BITS_IN_BYTE = 8;
+
+std::vector<bool> binary_repsesentation(char ch)
+{
+    std::vector<bool> ans(BITS_IN_BYTE, 0);
+    for (size_t i = 0; i < BITS_IN_BYTE; i++)
+    {
+        ans[i] = (ch >> i) & 1;
+    }
+    return ans;
+}
+
+template<typename T>
+std::vector<bool> binary_repsesentation(const T& item)
+{
+    union
+    {
+        T a;
+        char b[sizeof(T)];
+    } bytes;
+    bytes.a = item;
+    std::vector<bool> ans;
+    for (size_t i = 0; i < sizeof(T); i++)
+    {
+        std::vector<bool> now = binary_repsesentation(bytes.b[i]);
+        for (size_t j = 0; j < BITS_IN_BYTE; j++)
+            ans.push_back(now[j]);
+    }
+    return ans;
+}
+
+}
+
 fraction::fraction(double a)
 {
-    std::vector<bool> repr = geom::utils::binary_repsesentation(a);
+    if (a == 0. || a == -0.)
+    {
+        p = 0;
+        q = 1;
+        return;
+    }
+    std::vector<bool> repr = binary_repsesentation(a);
     int sign = repr[MANTISS + EXPONENT] ? -1 : 1;
     big_int mantiss = 1;
     for (size_t i = 0; i < MANTISS; i++)
@@ -151,7 +192,7 @@ big_int fraction::gcd(const big_int &a, const big_int &b)
     return b == 0 ? a : gcd(b, a % b);
 }
 
-std::ostream& operator<<(std::ostream& out, fraction f)
+std::ostream& operator<<(std::ostream& out, const fraction& f)
 {
     if (f.q == 1)
         return out << f.p;

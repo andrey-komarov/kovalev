@@ -2,7 +2,6 @@
 #define FRACTION_H
 
 #include "big_int/big_int.h"
-#include "utils.h"
 #include <vector>
 #include <ostream>
 
@@ -29,7 +28,7 @@ private:
     big_int p, q;
 
     friend fraction operator-(fraction);
-    friend std::ostream& operator<<(std::ostream& out, fraction f);
+    friend std::ostream& operator<<(std::ostream& out, const fraction& f);
 };
 
 bool operator<=(const fraction& f1, const fraction& f2);
