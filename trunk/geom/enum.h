@@ -9,6 +9,8 @@ namespace geom
         LESS = -1, EQUAL = 0, GREATER = 1,
         RIGHT_TURN = -1, COLLINEAR = 0, LEFT_TURN = 1
     };
+
+    Sign negate(Sign s);
 }
 
 #endif // ENUM_H

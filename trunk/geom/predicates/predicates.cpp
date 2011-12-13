@@ -16,12 +16,12 @@ geom::Sign orientation(const geom::point &a, const geom::point &b, const geom::p
     const geom::simple_point<double>& p2 = boost::get<geom::simple_point<double> >(b.get());
     const geom::simple_point<double>& p3 = boost::get<geom::simple_point<double> >(c.get());
     expansion e;
-    e.add(two_product(p2.x, p3.y));
-    e.add(two_product(-p1.x, p3.y));
-    e.add(two_product(-p2.x, p1.y));
-    e.add(two_product(-p2.y, p3.x));
-    e.add(two_product(p1.y, p3.x));
-    e.add(two_product(p2.y, p1.x));
+    e += two_product(p2.x, p3.y);
+    e += two_product(-p1.x, p3.y);
+    e += two_product(-p2.x, p1.y);
+    e += two_product(-p2.y, p3.x);
+    e += two_product(p1.y, p3.x);
+    e += two_product(p2.y, p1.x);
     return e.sign();
 
 }

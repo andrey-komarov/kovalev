@@ -25,6 +25,7 @@ SOURCES += geom/point/point.cpp \
     geom/segment/segment.cpp \
     geom/exact/expansion/expansion.cpp \
     geom/predicates/predicates.cpp \
-    geom/point/exact_point.cpp
+    geom/point/exact_point.cpp \
+    ../enum.cpp
 OTHER_FILES += trunk.pro.user \
     Makefile

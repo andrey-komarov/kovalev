@@ -10,11 +10,11 @@ namespace utils
 {
 
 template<typename T>
-geom::Sign compare(const T& a, const T& b)
+Sign compare(const T& a, const T& b)
 {
     if (a == b)
-        return geom::EQUAL;
-    return a < b ? geom::LESS : geom::GREATER;
+        return EQUAL;
+    return a < b ? LESS : GREATER;
 }
 
 template<typename T>

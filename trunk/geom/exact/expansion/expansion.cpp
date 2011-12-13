@@ -1,5 +1,8 @@
 #include "expansion.h"
 
+namespace geom
+{
+
 expansion::expansion(double a)
 {
     values_.push_back(a);
@@ -17,6 +20,11 @@ expansion& expansion::operator=(const expansion& e)
 {
     this->values_ = e.values_;
     return *this;
+}
+
+void expansion::swap(expansion& e)
+{
+    std::swap(values_, e.values_);
 }
 
 geom::Sign expansion::sign() const
@@ -42,7 +50,7 @@ std::pair<double, double> expansion::sum_two(double a, double b)
     return std::make_pair(x, y);
 }
 
-void expansion::grow_expantion(double a)
+void expansion::grow_expansion(double a)
 {
     std::size_t m = size();
     std::vector<double> q;
@@ -60,6 +68,8 @@ void expansion::grow_expantion(double a)
     values_ = h;
 }
 
+bool expansion::is_double() const
+{   return values_.size() <= 1;}
 
 double expansion::approximate_sum() const
 {
@@ -71,24 +81,106 @@ double expansion::approximate_sum() const
     return res;
 }
 
-void expansion::add(double a)
+expansion& expansion::operator+=(double a)
 {
-    grow_expantion(a);
+    grow_expansion(a);
+    return *this;
 }
 
-void expansion::add(std::pair<double, double> p)
+expansion& expansion::operator+=(const std::pair<double, double>& p)
 {
-    add(p.first);
-    add(p.second);
+    grow_expansion(p.first);
+    grow_expansion(p.second);
+    return *this;
 }
 
-void expansion::add(expansion e)
+expansion& expansion::operator+=(const expansion& e)
 {
     for (std::size_t i = 0; i < e.values_.size(); i++)
     {
-        add(e.values_[i]);
+        operator+=(e.values_[i]);
     }
+    return *this;
 }
+
+expansion& expansion::operator*=(double a)
+{
+    expansion res;
+    for (std::vector<double>::const_iterator it = values_.begin(); it != values_.end(); it++)
+        res += two_product(*it, a);
+    swap(res);
+    return *this;
+}
+
+expansion& expansion::operator*=(const expansion& e)
+{
+    expansion accumulator(0);
+    for (std::vector<double>::const_iterator it = e.values_.begin(); it != e.values_.end(); it++)
+        accumulator += *this * *it;
+    swap(accumulator);
+    return *this;
+}
+
+expansion operator-(expansion e)
+{
+    for (std::vector<double>::iterator it = e.values_.begin(); it != e.values_.end(); it++)
+        *it = -*it;
+    return e;
+}
+
+bool expansion::operator==(const expansion& e) const
+{
+    if (values_.size() != e.values_.size())
+        return false;
+    for (
+            std::vector<double>::const_iterator it1 = values_.begin(),
+                                                it2 = e.values_.begin();
+            it1 != values_.end() && it2 != e.values_.end();
+            it1++, it2++
+    )
+    {
+       if (*it1 != *it2)
+            return false;
+    }
+    return true;
+}
+
+bool expansion::operator<(const expansion& e) const
+{
+    std::vector<double>::const_reverse_iterator it1, it2;
+    for (
+            it1 = values_.rbegin(), it2 = e.values_.rbegin();
+            it1 != values_.rend() && it2 != e.values_.rend();
+            it1++, it2++
+    )
+    {
+        if (*it1 != *it2)
+            return *it1 < *it2;
+    }
+    if (it1 != values_.rend() && *it1 < 0)
+        return true;
+    if (it2 != e.values_.rend() && *it2 > 0)
+        return true;
+    return false;
+}
+
+expansion& operator-=(expansion& e1, const expansion& e2)
+{    return e1 += -e2;}
+
+expansion operator-(expansion e1, const expansion& e2)
+{   return e1 -= e2;}
+
+expansion operator+(expansion e1, const expansion& e2)
+{   return e1 += e2;}
+
+expansion operator*(expansion e1, double d)
+{   return e1 *= d;}
+
+expansion operator*(expansion e1, const expansion& e2)
+{   return e1 *= e2;}
+
+bool operator!=(const expansion& e1, const expansion& e2)
+{   return !(e1 == e2);}
 
 std::pair<double, double> split(double a, int s)
 {
@@ -102,8 +194,8 @@ std::pair<double, double> split(double a, int s)
 std::pair<double, double> two_product(double a, double b)
 {
     double x = a * b;
-    std::pair<double, double> a_hi_low = split(a, (MANTISS + 1) / 2);
-    std::pair<double, double> b_hi_low = split(b, (MANTISS + 1) / 2);
+    std::pair<double, double> a_hi_low = split(a, (geom::MANTISS + 1) / 2);
+    std::pair<double, double> b_hi_low = split(b, (geom::MANTISS + 1) / 2);
     double err1 = x - (a_hi_low.first * b_hi_low.first);
     double err2 = err1 - (a_hi_low.second * b_hi_low.first);
     double err3 = err2 - (a_hi_low.first * b_hi_low.second);
@@ -111,7 +203,7 @@ std::pair<double, double> two_product(double a, double b)
     return std::make_pair(x, y);
 }
 
-std::ostream& operator<<(std::ostream& out, const expansion& e)
+std::ostream& operator<<(std::ostream& out, const geom::expansion& e)
 {
     out << "[";
     for (size_t i = 0; i < e.values_.size(); i++)
@@ -119,4 +211,6 @@ std::ostream& operator<<(std::ostream& out, const expansion& e)
         out << e.values_[i] << " ";
     }
     return out << "]";
+}
+
 }

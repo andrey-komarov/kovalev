@@ -7,7 +7,7 @@
 #include "simple_point.h"
 #include "exact_point.h"
 #include "fraction/fraction.h"
-#include "geom/traits/supertype.h"
+//#include "geom/traits/supertype.h"
 
 #include <ostream>
 
@@ -20,6 +20,7 @@ struct point
 {
     point();
     point(double, double);
+    point(const exact_point&);
 
     bool operator<(const point&) const;
     bool operator==(const point&) const;

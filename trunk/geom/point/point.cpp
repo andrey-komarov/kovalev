@@ -4,29 +4,19 @@ namespace
 {
     struct compareByX_visitor : public boost::static_visitor<geom::Sign>
     {
-        geom::Sign operator()(const geom::simple_point<double>& p1, const geom::simple_point<double>& p2) const
+        template<typename T1, typename T2>
+        geom::Sign operator()(const T1& p1, const T2& p2) const
         {
             return geom::utils::compare(p1.x, p2.x);
-        }
-
-        template<typename T, typename K>
-        geom::Sign operator()(const T&, const K&) const
-        {
-            throw geom::errors::not_implemented_yet();
         }
     };
 
     struct compareByY_visitor : public boost::static_visitor<geom::Sign>
     {
-        geom::Sign operator()(const geom::simple_point<double>& p1, const geom::simple_point<double>& p2) const
+        template<typename T1, typename T2>
+        geom::Sign operator()(const T1& p1, const T2& p2) const
         {
             return geom::utils::compare(p1.y, p2.y);
-        }
-
-        template<typename T, typename K>
-        geom::Sign operator()(const T&, const K&) const
-        {
-            throw geom::errors::not_implemented_yet();
         }
     };
 
@@ -42,6 +32,15 @@ point::point() :
 point::point(double x, double y):
         data_(simple_point<double>(x, y))
 {}
+
+point::point(const exact_point& p):
+        data_(p)
+{
+    if (p.is_double())
+    {
+        data_ = p.approximate();
+    }
+}
 
 geom::Sign compareByX(const point& p1, const point& p2)
 {

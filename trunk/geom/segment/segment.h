@@ -23,6 +23,8 @@ bool parallel(const geom::segment&, const geom::segment&);
 bool on_same_line(const geom::segment&, const geom::segment&);
 bool intersects(const geom::segment&, const geom::segment&);
 
+point intersect(const geom::segment&, const geom::segment&);
+
 }
 
 #endif // SEGMENT_H
