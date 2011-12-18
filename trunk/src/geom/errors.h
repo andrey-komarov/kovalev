@@ -1,8 +1,10 @@
 #ifndef ERRORS_H
 #define ERRORS_H
 
-#ifndef RELEASE
 #include <iostream>
+#include <string>
+
+#ifndef RELEASE
 #define DEBUG(a) std::cerr << a;
 #else
 #define DEBUG(a) ;
@@ -12,7 +14,10 @@ namespace geom
 {
     namespace errors
     {
-        class not_implemented_yet{};
+        struct not_implemented_yet{
+            not_implemented_yet();
+            not_implemented_yet(std::string);
+        };
     }
 }
 

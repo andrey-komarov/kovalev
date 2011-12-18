@@ -9,7 +9,8 @@ set(CMAKE_BUILD_TYPE Release)
 add_executable (test1 test1.cpp)
 add_custom_command (
     OUTPUT Test2.class 
-    COMMAND javac Test2.java -d ${EXECUTABLE_OUTPUT_PATH}
+#    COMMAND javac Test2.java -d ${EXECUTABLE_OUTPUT_PATH}
+    COMMAND javac Test2.java
     DEPENDS Test2.java
     )
 add_custom_target (Test2 ALL DEPENDS Test2.class)

@@ -1,13 +1,10 @@
 #include "geom/segment.h"
 
-#include <iostream>
-using std::cerr;
-
 namespace
 {
 
 template<typename T>
-    bool in_order(const T& a, const T& b, const T& c, geom::Sign (*comp)(const T&, const T&))
+bool in_order(const T& a, const T& b, const T& c, geom::Sign (*comp)(const T&, const T&))
 {
     return (comp(a, b) != geom::GREATER && comp(b, c) != geom::GREATER)
             || (comp(a, b) != geom::LESS && comp(b, c) != geom::LESS);

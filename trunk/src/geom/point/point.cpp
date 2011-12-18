@@ -44,12 +44,12 @@ point::point(const exact_point& p):
 
 geom::Sign compareByX(const point& p1, const point& p2)
 {
-    return boost::apply_visitor(compareByX_visitor(), p1.data_, p2.data_);
+    return boost::apply_visitor(compareByX_visitor(), p1.get(), p2.get());
 }
 
 geom::Sign compareByY(const point& p1, const point& p2)
 {
-    return boost::apply_visitor(compareByY_visitor(), p1.data_, p2.data_);
+    return boost::apply_visitor(compareByY_visitor(), p1.get(), p2.get());
 }
 
 const boost::variant<geom::simple_point<double>, geom::exact_point >& point::get() const
