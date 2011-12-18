@@ -41,13 +41,21 @@ namespace utils
 Sign compare(const std::pair<expansion, expansion>& p1, const std::pair<expansion, expansion>& p2)
 {
     DEBUG("^_^ Comparing " << p1.first << "/" << p1.second << " and " << p2.first << "/" << p2.second << "\n");
-    return compare(p1.first * p2.second, p1.second * p2.first);
+    Sign res = compare(p1.first * p2.second, p1.second * p2.first);
+    if (signum(p1.second) * signum(p2.second) == NEGATIVE)
+        return negate(res);
+    else
+        return res;
 }
 
 Sign compare(const std::pair<expansion, expansion>& p1, double p2)
 {
     DEBUG("^_^ Comparing " << p1.first << "/" << p1.second << " and " << p2 << "\n");
-    return compare(p1.first, p1.second * p2);
+    Sign res = compare(p1.first, p1.second * p2);
+    if (signum(p1.second) == NEGATIVE)
+        return negate(res);
+    else
+        return res;
 }
 
 Sign compare(double p1, const std::pair<expansion, expansion>& p2)

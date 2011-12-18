@@ -4,6 +4,8 @@
 #ifndef RELEASE
 #include <iostream>
 #define DEBUG(a) std::cerr << a;
+#else
+#define DEBUG(a) ;
 #endif
 
 namespace geom
