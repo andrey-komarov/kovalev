@@ -4,6 +4,7 @@
 
 #include "geom/point.h"
 #include "geom/segment.h"
+#include "geom/predicates.h"
 
 using geom::point;
 using geom::segment;
@@ -22,12 +23,22 @@ int main()
 //    point p = intersect(s1, s2);
 //    cerr << (p < p3) << "\n";
 
-    vector<point> points;
-    int n;
-    cin >> n;
+//    vector<point> points;
+//    int n;
+//    cin >> n;
+	int sp = 0, sn = 0;
+	int n = 10000000;
     for (int i = 0; i < n; i++)
     {
-        if (i % (n / 10 + 1) == 0)
+	point p1(rand(), rand());
+	point p2(rand(), rand());
+	point p3(rand(), rand());
+//	segment s(p1, p2);
+	if (geom::predicates::orientation(p1, p2, p3) == -1)
+		sn++;
+	else
+		sp++;
+/*        if (i % (n / 10 + 1) == 0)
             cerr << "\r" << i << "\n";
         double x1, y1, x2, y2;
         cin >> x1 >> y1 >> x2 >> y2;
@@ -40,9 +51,10 @@ int main()
 //            cout << i << " :: " << p << " :: " << (p < point(0, 0)) << "\n";
             points.push_back(p);
         }
-        points.push_back(s1.a);
+        points.push_back(s1.a);*/
     }
-    sort(points.begin(), points.end());
+/*    sort(points.begin(), points.end());
     for (vector<point>::const_iterator it = points.begin(); it != points.end(); it++)
-        cout << *it << "\n";
+        cout << *it << "\n";*/
+	cerr << sn << " " << sp << "\n";
 }

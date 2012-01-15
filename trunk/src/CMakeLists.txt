@@ -1,5 +1,5 @@
 include_directories(.)
-add_definitions(-Wall -W -Wno-sign-compare -DRELEASE)
+add_definitions(-Wall -W -O3 -Wno-sign-compare -DRELEASE)
 
 add_executable(intersection main.cpp
 	geom/enum.cpp
