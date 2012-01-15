@@ -13,8 +13,28 @@ Sign orientation_essa(const segment& s, const point& p)
 	return signum<12>(a);
 }
 
+#include <limits>
+#include <cmath>
+Sign orientation_epsilon(const segment& s, const point& p)
+{
+	double eps = 8 * std::numeric_limits<double>::epsilon();
+	double s1 = (s.b.x - s.a.x) * (p.y - s.a.y);
+	double s2 = (s.b.y - s.a.y) * (p.x - s.a.x);
+	eps *= std::abs(s1) + std::abs(s2);
+	double res = s1 - s2;
+	if (res > eps)
+		return LEFT;
+	if (res < -eps)
+		return RIGHT;
+	return EQUAL;
+}
+
+#include "assert.h"
 Sign orientation(const segment& s, const point& p)
 {
-	return orientation_essa(s, p);
+	Sign sign = orientation_epsilon(s, p);
+	if (sign == EQUAL)
+		return orientation_essa(s, p);
+	return sign;
 }
 
