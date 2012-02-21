@@ -1,17 +1,26 @@
 #ifndef slow_persistent_set_h
 #define slow_persistent_set_h
 
-#include "persistent_set.h"
 #include <map>
 #include <set>
 #include <vector>
+#include <functional>
+#include <cstddef>
 
 namespace geom
 {
 
 template<typename T, typename cmp = std::less<T> >
-struct slow_persistent_set : persistent_set<T, cmp> 
+struct slow_persistent_set
 {
+        typedef T value_type;
+        typedef T* pointer;
+        typedef const T* const_pointer;
+        typedef T& reference;
+        typedef const T& const_reference;
+        typedef size_t size_type;
+        typedef ptrdiff_t difference_type;
+
 	slow_persistent_set() : 
 		revision(0),
 		revisions(1),
@@ -48,8 +57,17 @@ struct slow_persistent_set : persistent_set<T, cmp>
 		current = revisions[real_ids[id]];
 	}
 
-	struct iterator : public set<T>::iterator
+	struct iterator
 	{
+                typedef std::bidirectional_iterator_tag iterator_category;
+                typedef slow_persistent_set::value_type value_type;
+                typedef slow_persistent_set::size_type size_type;
+                typedef slow_persistent_set::difference_type difference_type;
+                typedef slow_persistent_set::pointer pointer;
+                typedef slow_persistent_set::const_pointer const_pointer;
+                typedef slow_persistent_set::reference reference;
+                typedef slow_persistent_set::const_reference const_reference;
+
 		typename std::set<T>::iterator it;
 	
 		iterator(const typename std::set<T>::iterator& it) : it(it)
@@ -88,10 +106,10 @@ struct slow_persistent_set : persistent_set<T, cmp>
 			return tmp;
 		}
 
-		typename set<T>::iterator::reference operator*()
+		const_reference operator*()
 		{	return *it;}
 
-		typename set<T>::iterator::pointer operator->()
+		pointer operator->()
 		{	return &(*this);}
 
 		bool operator==(const iterator& i) const
