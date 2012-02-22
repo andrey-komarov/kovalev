@@ -1,13 +1,16 @@
 #include "tree.h"
 
 template<typename T>
-tree<T>::tree() : nil(new node(T(), node::Color::BLACK))
+tree<T>::tree() :
+    t(nullptr)
 {}
 
 template<typename T>
 void tree<T>::insert(const_reference val)
 {
     node::insert(t, val);
+    while (t->parent != nullptr)
+        t = t->parent;
 }
 
 template<typename T>

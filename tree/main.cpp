@@ -6,7 +6,7 @@ using namespace std;
 int main()
 {
     tree<int> t;
-    for (int i = 0; i < 10000; i++)
+    for (int i = 0; i < 100000; i++)
         t.insert(i);
-    cerr << t;
+    cerr << t.depth();
 }

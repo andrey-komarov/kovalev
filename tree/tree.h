@@ -49,8 +49,8 @@ struct tree
 private:
     struct node;
     typedef std::shared_ptr<node> pnode;
+//    typedef node* pnode;
 
-    pnode nil;
     pnode t;
 };
 

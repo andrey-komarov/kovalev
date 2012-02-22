@@ -12,7 +12,7 @@ struct tree<T>::node
     node(const_reference, Color = Color::RED);
 
     static size_t depth(typename tree<T>::pnode&);
-    static void insert(typename tree<T>::pnode&, const_reference);
+    static void insert(typename tree<T>::pnode&, const_reference, const typename tree<T>::pnode& = nullptr);
 
 private:
     T val;

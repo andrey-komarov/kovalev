@@ -16,7 +16,10 @@ template<typename T>
 typename tree<T>::pnode grandparent(const typename tree<T>::pnode&);
 template<typename T>
 typename tree<T>::pnode uncle(const typename tree<T>::pnode& n);
-
+template<typename T>
+typename tree<T>::pnode brother(const typename tree<T>::pnode& n);
+template<typename T>
+void delete_one_child(typename tree<T>::pnode&);
 
 template<typename T>
 void rotate_right(typename tree<T>::pnode& n)
@@ -27,16 +30,37 @@ void rotate_right(typename tree<T>::pnode& n)
  *   / \             / \
  *  a   b           b   c */
     typename tree<T>::pnode A = n->left;
+    n->left = A->right;
+    if (n->left != nullptr)
+        n->left->parent = n;
     A->right = n;
-    n->left = A;
+    A->parent = n->parent;
+    if (A->parent != nullptr)
+        (n == A->parent->left ? A->parent->left : A->parent->right) = A;
+    if (A->right != nullptr)
+        A->right->parent = A;
+    n = A;
 }
 
 template<typename T>
 void rotate_left(typename tree<T>::pnode& n)
 {
+/*    n               A
+ *   / \             / \
+ *  a   A    ==>    n   c
+ *     / \         / \
+ *    b   c       a   b     */
     typename tree<T>::pnode A = n->right;
+    n->right = A->left;
+    if (n->right != nullptr)
+        n->right->parent = n;
     A->left = n;
-    n->right = A;
+    A->parent = n->parent;
+    if (A->parent != nullptr)
+        (n == A->parent->left ? A->parent->left : A->parent->right) = A;
+    if (A->left != nullptr)
+        A->left->parent = A;
+    n = A;
 }
 
 template<typename T>
@@ -57,6 +81,15 @@ typename tree<T>::pnode uncle(const typename tree<T>::pnode& n)
         return g->right;
     else
         return g->left;
+}
+
+template<typename T>
+typename tree<T>::pnode brother(const typename tree<T>::pnode& n)
+{
+    if (n == n->parent->left)
+        return n->parent->right;
+    else
+        return n->parent->left;
 }
 
 template<typename T>
@@ -102,16 +135,18 @@ template<typename T>
 void insert_case4(typename tree<T>::pnode& n)
 {
     typename tree<T>::pnode g = grandparent<T>(n);
-    if (n == n->parent->right)
+    if (n == n->parent->right && n->parent == g->left)
     {
         rotate_left<T>(n->parent);
         insert_case5<T>(n->left);
     }
-    else
+    else if (n == n->parent->left && n->parent == g->right)
     {
         rotate_right<T>(n->parent);
         insert_case5<T>(n->right);
     }
+    else
+        insert_case5<T>(n);
 }
 
 template<typename T>
@@ -129,30 +164,41 @@ void insert_case5(typename tree<T>::pnode& n)
 }
 
 template<typename T>
-void tree<T>::node::insert(typename tree<T>::pnode& t, typename tree<T>::const_reference val)
+void tree<T>::node::insert(typename tree<T>::pnode& t, typename tree<T>::const_reference val, const typename tree<T>::pnode& parent)
 {
     if (t == nullptr)
     {
         typedef typename tree<T>::node node;
         t = pnode(new node(val, node::Color::RED));
+        t->parent = parent;
+        insert_case1<T>(t);
+        return;
     }
     if (t->val == val)
         return;
     if (val < t->val)
     {
-        insert(t->left, val);
-        insert_case1<T>(t);
+        insert(t->left, val, t);
     }
     else
     {
-        insert(t->right, val);
-        insert_case1<T>(t);
+        insert(t->right, val, t);
     }
 }
 
 template<typename T>
+void delete_one_child(typename tree<T>::pnode& t)
+{
+    assert (t->left == nullptr || t->right == nullptr);
+    typename tree<T>::pnode c = t->left == nullptr ? t->right : t->left;
+
+}
+
+template<typename T>
 tree<T>::node::node(const_reference val, Color color) :
-    val(val), color(color)
+    val(val),
+    left(nullptr), right(nullptr), parent(nullptr),
+    color(color)
 {}
 
 
@@ -161,5 +207,5 @@ size_t tree<T>::node::depth(typename tree<T>::pnode& t)
 {
     if (t == nullptr)
         return 0;
-    return std::max(depth(t->left), depth(t->right));
+    return std::max(depth(t->left), depth(t->right)) + 1;
 }
