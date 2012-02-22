@@ -113,14 +113,13 @@ void insert_case2(typename tree<T>::pnode& n)
 template<typename T>
 void insert_case3(typename tree<T>::pnode& n)
 {
-    typedef typename tree<T>::pnode pnode;
     typedef typename tree<T>::node::Color Color;
-    pnode u(uncle<T>(n));
+    auto u(uncle<T>(n));
     if (u != nullptr && u->color == Color::RED)
     {
         n->parent->color = Color::BLACK;
         u->color = Color::BLACK;
-        pnode g(grandparent<T>(n));
+        auto g(grandparent<T>(n));
         g->color = Color::RED;
         insert_case1<T>(g);
     }
@@ -134,7 +133,7 @@ void insert_case3(typename tree<T>::pnode& n)
 template<typename T>
 void insert_case4(typename tree<T>::pnode& n)
 {
-    typename tree<T>::pnode g = grandparent<T>(n);
+    auto g = grandparent<T>(n);
     if (n == n->parent->right && n->parent == g->left)
     {
         rotate_left<T>(n->parent);
@@ -154,7 +153,7 @@ void insert_case5(typename tree<T>::pnode& n)
 {
     typedef typename tree<T>::node::Color Color;
 
-    typename tree<T>::pnode g = grandparent<T>(n);
+    auto g = grandparent<T>(n);
     n->parent->color = Color::BLACK;
     g->color = Color::RED;
     if (n == n->parent->left && n->parent == g->left)
@@ -189,9 +188,20 @@ void tree<T>::node::insert(typename tree<T>::pnode& t, typename tree<T>::const_r
 template<typename T>
 void delete_one_child(typename tree<T>::pnode& t)
 {
+    typedef typename tree<T>::node::Color Color;
     assert (t->left == nullptr || t->right == nullptr);
     typename tree<T>::pnode c = t->left == nullptr ? t->right : t->left;
-
+    std::swap(t->left, c->left);
+    std::swap(t->right, c->right);
+    std::swap(t->color, c->color);
+    if (t->color == Color::BLACK)
+    {
+        if (c->color == Color::RED)
+            c->color = Color::BLACK;
+        else
+//            delete_case1<T>(c);
+            // TODO
+    }
 }
 
 template<typename T>
