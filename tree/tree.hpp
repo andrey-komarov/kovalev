@@ -2,37 +2,58 @@
 
 template<typename T>
 tree<T>::tree() :
-    t(nullptr)
+    root(nil<T>())
 {}
 
 template<typename T>
 void tree<T>::insert(const_reference val)
 {
-    node::insert(t, val);
-    while (t->parent != nullptr)
-        t = t->parent;
+    if (count(val) != 0)
+        return;
+    root = node::insert(root, val);
+    if (fixit_insert<T>() != nil<T>())
+    {
+        insert_case1<T>(fixit_insert<T>());
+        fixit_insert<T>() = nil<T>();
+        while (root->parent != nil<T>())
+            root = root->parent;
+    }
 }
 
 template<typename T>
-void print(std::ostream& out, T& t)
+void tree<T>::erase(const_reference val)
 {
-    if (t == nullptr)
+    node::erase(root, val);
+    while (root->parent != nil<T>())
+        root = root->parent;
+}
+
+template<typename T>
+size_t tree<T>::count(const_reference val)
+{
+    return node::count(root, val);
+}
+
+template<typename T>
+void print(std::ostream& out, const typename tree<T>::pnode& t)
+{
+    if (t == nil<T>())
         return;
-    print(out, t->left);
+    print<T>(out, t->left);
     out << t->val << " ";
-    print(out, t->right);
+    print<T>(out, t->right);
     return;
 }
 
 template<typename T>
 std::ostream& operator<< (std::ostream& out, const tree<T> t)
 {
-    print(out, t.t);
+    print<T>(out, t.root);
     return out;
 }
 
 template<typename T>
 size_t tree<T>::depth()
 {
-    return node::depth(t);
+    return node::depth(root);
 }

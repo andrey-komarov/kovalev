@@ -21,6 +21,8 @@ struct tree
 
     tree();
     void insert(const_reference elem);
+    void erase(const_reference elem);
+    size_t count(const_reference elem);
 
     struct iterator
     {
@@ -42,23 +44,18 @@ struct tree
 //		bool operator==(const iterator&) const;
 //		bool operator!=(const iterator&) const;
     };
-    int a;
 
     size_t depth();
 
 private:
     struct node;
-    typedef std::shared_ptr<node> pnode;
-//    typedef node* pnode;
-
-    pnode t;
+//    typedef std::shared_ptr<node> pnode;
+    typedef node* pnode;
+    pnode root;
 };
 
-//template<typename T>
-//std::ostream& operator<<(std::ostream& out, const typename tree<T>::node& t);
-
-//template<typename T>
-//std::ostream& operator<<(std::ostream& out, const tree<T>& t);
+template<typename T>
+typename tree<T>::pnode& nil();
 
 #include "treenode.h"
 #include "tree.hpp"
