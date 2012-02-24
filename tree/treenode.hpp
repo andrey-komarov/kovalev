@@ -19,19 +19,19 @@ typename tree<T>::pnode uncle(const typename tree<T>::pnode& n);
 template<typename T>
 typename tree<T>::pnode brother(const typename tree<T>::pnode& n);
 template<typename T>
-void delete_one_child(typename tree<T>::pnode&);
+//typename tree<T>::pnode delete_one_child(typename tree<T>::pnode&);
+//template<typename T>
+typename tree<T>::pnode delete_case1(typename tree<T>::pnode);
 template<typename T>
-void delete_case1(typename tree<T>::pnode&);
+typename tree<T>::pnode delete_case2(typename tree<T>::pnode);
 template<typename T>
-void delete_case2(typename tree<T>::pnode&);
+typename tree<T>::pnode delete_case3(typename tree<T>::pnode);
 template<typename T>
-void delete_case3(typename tree<T>::pnode&);
+typename tree<T>::pnode delete_case4(typename tree<T>::pnode);
 template<typename T>
-void delete_case4(typename tree<T>::pnode&);
+typename tree<T>::pnode delete_case5(typename tree<T>::pnode);
 template<typename T>
-void delete_case5(typename tree<T>::pnode&);
-template<typename T>
-void delete_case6(typename tree<T>::pnode&);
+typename tree<T>::pnode delete_case6(typename tree<T>::pnode);
 template<typename T>
 typename tree<T>::node::Color color(const typename tree<T>::pnode&);
 
@@ -47,6 +47,13 @@ typename tree<T>::pnode& fixit_insert()
 {
     static typename tree<T>::pnode fixit_insert_(nil<T>());
     return fixit_insert_;
+}
+
+template<typename T>
+typename tree<T>::pnode& fixit_delete()
+{
+    static typename tree<T>::pnode fixit_delete_(nil<T>());
+    return fixit_delete_;
 }
 
 template<typename T>
@@ -226,40 +233,41 @@ typename tree<T>::pnode tree<T>::node::insert(typename tree<T>::pnode t, typenam
     }
 }
 
-template<typename T>
-void delete_one_child(typename tree<T>::pnode& t)
-{
-    typedef typename tree<T>::node::Color Color;
-    typename tree<T>::pnode c = t->left == nil<T>() ? t->right : t->left;
-    auto t_old = t;
-    if (c == nil<T>())
-    {
-        t->parent->left = nil<T>();
-        t->parent->right = nil<T>();
-        t = nil<T>();
-        if (color<T>(t) == Color::BLACK)
-            delete_case1<T>(t_old->parent);
-        return;
-    }
-    t = c;
-    if (color<T>(t_old) == Color::BLACK)
-    {
-        if (color<T>(c) == Color::RED)
-            c->color = Color::BLACK;
-        else
-            delete_case1<T>(c == nil<T>() ? t_old->parent : c);
-    }
-}
+//template<typename T>
+//typename tree<T>::pnode delete_one_child(typename tree<T>::pnode& t)
+//{
+//    typedef typename tree<T>::node::Color Color;
+//    typename tree<T>::pnode c = t->left == nil<T>() ? t->right : t->left;
+//    auto t_old = t;
+//    if (c == nil<T>())
+//    {
+//        t->parent->left = nil<T>();
+//        t->parent->right = nil<T>();
+//        t = nil<T>();
+//        if (color<T>(t) == Color::BLACK)
+//            delete_case1<T>(t_old->parent);
+//        return;
+//    }
+//    t = c;
+//    if (color<T>(t_old) == Color::BLACK)
+//    {
+//        if (color<T>(c) == Color::RED)
+//            c->color = Color::BLACK;
+//        else
+//            delete_case1<T>(c == nil<T>() ? t_old->parent : c);
+//    }
+//}
 
 template<typename T>
-void delete_case1(typename tree<T>::pnode& t)
+typename tree<T>::pnode delete_case1(typename tree<T>::pnode t)
 {
     if (t->parent != nil<T>())
-        delete_case2<T>(t);
+        return delete_case2<T>(t);
+    return t;
 }
 
 template<typename T>
-void delete_case2(typename tree<T>::pnode& t)
+typename tree<T>::pnode delete_case2(typename tree<T>::pnode t)
 {
     typedef typename tree<T>::node::Color Color;
     auto s = brother<T>(t);
@@ -272,11 +280,11 @@ void delete_case2(typename tree<T>::pnode& t)
         else
             rotate_right<T>(t->parent);
     }
-    delete_case3<T>(t);
+    return delete_case3<T>(t);
 }
 
 template<typename T>
-void delete_case3(typename tree<T>::pnode& t)
+typename tree<T>::pnode delete_case3(typename tree<T>::pnode t)
 {
     typedef typename tree<T>::node::Color Color;
     const auto BLACK = Color::BLACK;
@@ -284,14 +292,14 @@ void delete_case3(typename tree<T>::pnode& t)
     if (color<T>(t->parent) == BLACK && color<T>(s) == BLACK && color<T>(s->left) == BLACK && color<T>(s->right) == BLACK)
     {
         s->color = Color::RED;
-        delete_case1<T>(t->parent);
+        return delete_case1<T>(t->parent);
     }
     else
-        delete_case4<T>(t);
+        return delete_case4<T>(t);
 }
 
 template<typename T>
-void delete_case4(typename tree<T>::pnode& t)
+typename tree<T>::pnode delete_case4(typename tree<T>::pnode t)
 {
     typedef typename tree<T>::node::Color Color;
     auto s = brother<T>(t);
@@ -302,13 +310,14 @@ void delete_case4(typename tree<T>::pnode& t)
     {
         s->color = Color::RED;
         t->parent->color = Color::BLACK;
+        return t;
     }
     else
-        delete_case5<T>(t);
+        return delete_case5<T>(t);
 }
 
 template<typename T>
-void delete_case5(typename tree<T>::pnode& t)
+typename tree<T>::pnode delete_case5(typename tree<T>::pnode t)
 {
     typedef typename tree<T>::node::Color Color;
     auto s = brother<T>(t);
@@ -331,11 +340,11 @@ void delete_case5(typename tree<T>::pnode& t)
             rotate_left<T>(s);
         }
     }
-    delete_case6<T>(t);
+    return delete_case6<T>(t);
 }
 
 template<typename T>
-void delete_case6(typename tree<T>::pnode& t)
+typename tree<T>::pnode delete_case6(typename tree<T>::pnode t)
 {
     typedef typename tree<T>::node::Color Color;
     auto s = brother<T>(t);
@@ -344,26 +353,26 @@ void delete_case6(typename tree<T>::pnode& t)
     if (t == t->parent->left)
     {
         s->right->color = Color::BLACK;
-        rotate_left<T>(t->parent);
+        return rotate_left<T>(t->parent);
     }
     else
     {
         s->left->color = Color::BLACK;
-        rotate_right<T>(t->parent);
+        return rotate_right<T>(t->parent);
     }
 }
 
 template<typename T>
-void tree<T>::node::erase(typename tree<T>::pnode& t, tree<T>::const_reference val)
+typename tree<T>::pnode tree<T>::node::erase(typename tree<T>::pnode t, tree<T>::const_reference val)
 {
     if (t == nil<T>())
-        return;
+        return t;
     if (t->val == val)
-        erase(t);
+        return erase(t);
     else if (val < t->val)
-        erase(t->left, val);
+        return erase(t->left, val);
     else
-        erase(t->right, val);
+        return erase(t->right, val);
 }
 
 template<typename T>
@@ -380,7 +389,7 @@ size_t tree<T>::node::count(typename tree<T>::pnode& t, typename tree<T>::const_
 }
 
 template<typename T>
-void tree<T>::node::erase(typename tree<T>::pnode& t)
+typename tree<T>::pnode tree<T>::node::erase(typename tree<T>::pnode t)
 {
     typedef typename tree<T>::pnode pnode;
     typedef typename tree<T>::node::Color Color;
@@ -401,7 +410,8 @@ void tree<T>::node::erase(typename tree<T>::pnode& t)
     x->parent = y->parent;
     if (y->parent == nil<T>())
     {
-        std::cerr << "ололо";
+        fixit_delete<T>() = nil<T>();
+        return x;
     }
     else if (y == y->parent->left)
         y->parent->left = x;
@@ -410,7 +420,8 @@ void tree<T>::node::erase(typename tree<T>::pnode& t)
     if (y != t)
         t->val = y->val;
     if (y->color == Color::BLACK)
-        delete_case1<T>(x);
+        fixit_delete<T>() = x;
+    return y;
 }
 
 template<typename T>

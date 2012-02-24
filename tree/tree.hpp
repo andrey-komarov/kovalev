@@ -15,15 +15,22 @@ void tree<T>::insert(const_reference val)
     {
         insert_case1<T>(fixit_insert<T>());
         fixit_insert<T>() = nil<T>();
-        while (root->parent != nil<T>())
-            root = root->parent;
     }
+    while (root->parent != nil<T>())
+        root = root->parent;
 }
 
 template<typename T>
 void tree<T>::erase(const_reference val)
 {
-    node::erase(root, val);
+    if (count(val) == 0)
+        return;
+    root = node::erase(root, val);
+    if (fixit_delete<T>() != nil<T>())
+    {
+        delete_case1<T>(fixit_delete<T>());
+        fixit_delete<T>() = nil<T>();
+    }
     while (root->parent != nil<T>())
         root = root->parent;
 }

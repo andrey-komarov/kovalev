@@ -27,15 +27,17 @@ int main()
 //            assert (s.count(elem) == t.count(elem));
 //        }
 //    }
-    for (int i = 0; i < 4; i++)
+
+    int n = 10;
+
+    for (int i = 0; i < n; i++)
         t.insert(i);
-//    for (int i = 0; i < 10; i++)
-//    {
-//        t.erase(9 - i);
-//        cerr << t << "\n\n";
-//    }
-    t.erase(2);
-//    t.erase(2);
-//    t.erase(1);
+    for (int i = 0; i < n; i++)
+    {
+        cerr << ((i * 7) % n) << "---";
+        t.erase((i * 7) % n);
+        cerr << t << "\n\n";
+    }
+//    t.erase(9);
     cerr << t << "\n";
 }
