@@ -19,8 +19,6 @@ typename tree<T>::pnode uncle(const typename tree<T>::pnode& n);
 template<typename T>
 typename tree<T>::pnode brother(const typename tree<T>::pnode& n);
 template<typename T>
-//typename tree<T>::pnode delete_one_child(typename tree<T>::pnode&);
-//template<typename T>
 typename tree<T>::pnode delete_case1(typename tree<T>::pnode);
 template<typename T>
 typename tree<T>::pnode delete_case2(typename tree<T>::pnode);
@@ -54,6 +52,12 @@ typename tree<T>::pnode& fixit_delete()
 {
     static typename tree<T>::pnode fixit_delete_(nil<T>());
     return fixit_delete_;
+}
+
+bool& need_delete_fixup()
+{
+    static bool need_delete_fixup_(false);
+    return need_delete_fixup_;
 }
 
 template<typename T>
@@ -263,6 +267,7 @@ typename tree<T>::pnode delete_case1(typename tree<T>::pnode t)
 {
     if (t->parent != nil<T>())
         return delete_case2<T>(t);
+    t->color = tree<T>::node::Color::BLACK;
     return t;
 }
 
@@ -410,7 +415,8 @@ typename tree<T>::pnode tree<T>::node::erase(typename tree<T>::pnode t)
     x->parent = y->parent;
     if (y->parent == nil<T>())
     {
-        fixit_delete<T>() = nil<T>();
+        need_delete_fixup() = true;
+        fixit_delete<T>() = x;
         return x;
     }
     else if (y == y->parent->left)
@@ -420,7 +426,10 @@ typename tree<T>::pnode tree<T>::node::erase(typename tree<T>::pnode t)
     if (y != t)
         t->val = y->val;
     if (y->color == Color::BLACK)
+    {
+        need_delete_fixup() = true;
         fixit_delete<T>() = x;
+    }
     return y;
 }
 

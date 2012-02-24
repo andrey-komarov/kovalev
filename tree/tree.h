@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <ostream>
 #include <memory>
+#include <cassert>
 
 // Расстрел
 #define private public
@@ -23,6 +24,8 @@ struct tree
     void insert(const_reference elem);
     void erase(const_reference elem);
     size_t count(const_reference elem);
+
+    void check_rb_properties() const;
 
     struct iterator
     {
@@ -49,8 +52,8 @@ struct tree
 
 private:
     struct node;
-//    typedef std::shared_ptr<node> pnode;
-    typedef node* pnode;
+    typedef std::shared_ptr<node> pnode;
+//    typedef node* pnode;
     pnode root;
 };
 

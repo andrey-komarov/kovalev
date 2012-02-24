@@ -26,10 +26,10 @@ void tree<T>::erase(const_reference val)
     if (count(val) == 0)
         return;
     root = node::erase(root, val);
-    if (fixit_delete<T>() != nil<T>())
+    if (need_delete_fixup())
     {
         delete_case1<T>(fixit_delete<T>());
-        fixit_delete<T>() = nil<T>();
+        need_delete_fixup() = false;
     }
     while (root->parent != nil<T>())
         root = root->parent;
@@ -63,4 +63,39 @@ template<typename T>
 size_t tree<T>::depth()
 {
     return node::depth(root);
+}
+
+template<typename T>
+void check_black_depth(const typename tree<T>::pnode& t, size_t depth_need, size_t depth = 0)
+{
+    if (t == nil<T>())
+    {
+        assert (depth_need == depth);
+        return;
+    }
+
+    typedef typename tree<T>::node::Color Color;
+    if (t->color == Color::RED)
+    {
+        assert (t->left->color == Color::BLACK);
+        assert (t->left->color == Color::BLACK);
+    }
+    depth += t->color == Color::BLACK ? 1 : 0;
+    check_black_depth<T>(t->left, depth_need, depth);
+    check_black_depth<T>(t->right, depth_need, depth);
+}
+
+template<typename T>
+void tree<T>::check_rb_properties() const
+{
+    typedef typename node::Color Color;
+    assert (root->color == Color::BLACK);
+    pnode now = root;
+    size_t black_depth(0);
+    while (now != nil<T>())
+    {
+        black_depth += now->color == Color::BLACK ? 1 : 0;
+        now = now->left;
+    }
+    check_black_depth<T>(root, black_depth);
 }
