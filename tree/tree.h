@@ -36,7 +36,8 @@ public:
 
     struct iterator
     {
-        typedef std::bidirectional_iterator_tag iterator_category;
+//        typedef std::bidirectional_iterator_tag iterator_category; // TODO
+        typedef std::forward_iterator_tag iterator_category;
         typedef tree::value_type value_type;
         typedef tree::size_type size_type;
         typedef tree::difference_type difference_type;
@@ -48,12 +49,9 @@ public:
         iterator& operator=(const iterator&);
 
         const_reference operator*();
-//		pointer operator->();
+        pointer operator->();
         iterator& operator++();
-//		iterator operator++(int);
-//		iterator& operator--();
-//		iterator operator--(int);
-//		iterator& operator=(const iterator&);
+        iterator operator++(int);
         bool operator==(const iterator&) const;
         bool operator!=(const iterator&) const;
     private:

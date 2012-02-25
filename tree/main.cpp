@@ -41,7 +41,9 @@ int main()
 //    }
 //    for (int i = 0; i < 20; i++)
 //        t.erase(i);
-    for (tree<int>::iterator it = t.begin(); it != t.end(); ++it)
+    for (int i = 0; i < 10; i++)
+        t.insert(i);
+    for (tree<int>::iterator it = t.begin(); it != t.end(); it++)
     {
         cerr << *it << " ";
     }

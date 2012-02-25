@@ -37,6 +37,12 @@ typename tree<T>::const_reference tree<T>::iterator::operator*()
 }
 
 template<typename T>
+typename tree<T>::pointer tree<T>::iterator::operator->()
+{
+    return *(n->val);
+}
+
+template<typename T>
 bool tree<T>::iterator::operator==(const typename tree<T>::iterator& it) const
 {
     return t == it.t && n == it.n;
@@ -69,4 +75,12 @@ typename tree<T>::iterator& tree<T>::iterator::operator++()
         }
         n = n->parent;
     }
+}
+
+template<typename T>
+typename tree<T>::iterator tree<T>::iterator::operator++(int)
+{
+    iterator it = *this;
+    operator++();
+    return it;
 }
