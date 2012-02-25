@@ -237,31 +237,6 @@ typename tree<T>::pnode tree<T>::node::insert(typename tree<T>::pnode t, typenam
     }
 }
 
-//template<typename T>
-//typename tree<T>::pnode delete_one_child(typename tree<T>::pnode& t)
-//{
-//    typedef typename tree<T>::node::Color Color;
-//    typename tree<T>::pnode c = t->left == nil<T>() ? t->right : t->left;
-//    auto t_old = t;
-//    if (c == nil<T>())
-//    {
-//        t->parent->left = nil<T>();
-//        t->parent->right = nil<T>();
-//        t = nil<T>();
-//        if (color<T>(t) == Color::BLACK)
-//            delete_case1<T>(t_old->parent);
-//        return;
-//    }
-//    t = c;
-//    if (color<T>(t_old) == Color::BLACK)
-//    {
-//        if (color<T>(c) == Color::RED)
-//            c->color = Color::BLACK;
-//        else
-//            delete_case1<T>(c == nil<T>() ? t_old->parent : c);
-//    }
-//}
-
 template<typename T>
 typename tree<T>::pnode delete_case1(typename tree<T>::pnode t)
 {

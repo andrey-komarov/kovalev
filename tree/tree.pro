@@ -6,6 +6,7 @@ SOURCES += \
 HEADERS += \
     tree.h \
     treenode.h \
-    treenode_aux.hpp
+    treenode_aux.hpp \
+    iterator.hpp
 
 QMAKE_CXXFLAGS += -std=c++0x
