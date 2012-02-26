@@ -23,6 +23,10 @@ struct tree
 
 private:
     struct node;
+    struct patch;
+    struct helper;
+
+    typedef std::shared_ptr<patch> ppatch;
     typedef std::shared_ptr<node> pnode;
 //    typedef node* pnode;
 
@@ -34,33 +38,7 @@ public:
 
     void check_rb_properties() const;
 
-    struct iterator
-    {
-//        typedef std::bidirectional_iterator_tag iterator_category; // TODO
-        typedef std::forward_iterator_tag iterator_category;
-        typedef tree::value_type value_type;
-        typedef tree::size_type size_type;
-        typedef tree::difference_type difference_type;
-        typedef tree::pointer pointer;
-        typedef tree::const_pointer const_pointer;
-        typedef tree::reference reference;
-        typedef tree::const_reference const_reference;
-
-        iterator& operator=(const iterator&);
-
-        const_reference operator*();
-        pointer operator->();
-        iterator& operator++();
-        iterator operator++(int);
-        bool operator==(const iterator&) const;
-        bool operator!=(const iterator&) const;
-    private:
-        iterator (tree<T>* t, pnode n);
-
-        tree<T>* t;
-        pnode n;
-        friend class tree<T>;
-    };
+    struct iterator;
 
     iterator begin();
     iterator end();
@@ -68,12 +46,13 @@ public:
     size_t depth();
 
 private:
-    pnode root;
+    helper h;
 };
 
 template<typename T>
 typename tree<T>::pnode& nil();
 
+#include "patch.h"
 #include "treenode.h"
 #include "iterator.hpp"
 #include "tree.hpp"
