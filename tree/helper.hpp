@@ -467,29 +467,46 @@ auto tree<T>::helper::end() -> iterator
     return iterator(t, nil);
 }
 
-
 template<typename T>
-auto tree<T>::helper::left(const pnode& t) const -> pnode
+auto tree<T>::helper::left(const pnode& t, size_t revision) const -> pnode
 {
-    if (t->patch != nullptr && t->patch->what == patch::What::LEFT && t->patch->revision < current_revision)
+    if (t->patch != nullptr && t->patch->what == patch::What::LEFT && t->patch->revision <= revision)
         return t->patch->new_;
     return t->left_;
 }
 
 template<typename T>
-auto tree<T>::helper::right(const pnode& t) const -> pnode
+auto tree<T>::helper::left(const pnode& t) const -> pnode
 {
-    if (t->patch != nullptr && t->patch->what == patch::What::RIGHT && t->patch->revision < current_revision)
+    return left(t, revision);
+}
+
+template<typename T>
+auto tree<T>::helper::right(const pnode& t, size_t revision) const -> pnode
+{
+    if (t->patch != nullptr && t->patch->what == patch::What::RIGHT && t->patch->revision < revision)
         return t->patch->new_;
     return t->right_;
 }
 
 template<typename T>
-auto tree<T>::helper::parent(const pnode& t) const -> pnode
+auto tree<T>::helper::right(const pnode& t) const -> pnode
 {
-    if (t->patch != nullptr && t->patch->what == patch::What::PARENT && t->patch->revision < current_revision)
+    return right(t, revision);
+}
+
+template<typename T>
+auto tree<T>::helper::parent(const pnode& t, size_t revision) const -> pnode
+{
+    if (t->patch != nullptr && t->patch->what == patch::What::PARENT && t->patch->revision < revision)
         return t->patch->new_;
     return t->parent;
+}
+
+template<typename T>
+auto tree<T>::helper::parent(const pnode& t) const -> pnode
+{
+    return parent(t, revision);
 }
 
 template<typename T>
@@ -543,12 +560,6 @@ auto tree<T>::helper::set_parent(const pnode& t, const pnode& parent_) -> pnode
         revision++;
         return t->apply();
     }
-}
-
-template<typename T>
-void tree<T>::helper::search_in(size_t rev)
-{
-    current_revision = rev;
 }
 
 template<typename T>

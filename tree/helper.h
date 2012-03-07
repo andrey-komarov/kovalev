@@ -18,7 +18,6 @@ public:
     iterator begin();
     iterator end();
 
-    void search_in(size_t rev);
     void tag_it(size_t rev);
 
     size_t depth() const;
@@ -30,6 +29,10 @@ private:
     pnode set_left(const pnode&, const pnode&);
     pnode set_right(const pnode&, const pnode&);
     pnode set_parent(const pnode&, const pnode&);
+    pnode left(const pnode&, size_t revision) const;
+    pnode right(const pnode&, size_t revision) const;
+    pnode parent(const pnode&, size_t revision) const;
+
 
     pnode insert_case1(const pnode&);
     pnode insert_case2(const pnode&);
@@ -60,7 +63,6 @@ private:
     pnode fixit_delete;
     bool need_delete_fixup;
     size_t revision;
-    size_t current_revision;
     tree<T>* t;
     std::map<size_t, std::pair<size_t, pnode> > roots;
 

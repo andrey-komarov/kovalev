@@ -8,35 +8,30 @@ tree<T>::tree() :
 template<typename T>
 void tree<T>::insert(const_reference elem)
 {
-    search_in(max_revision);
     h.insert(elem);
 }
 
 template<typename T>
 void tree<T>::erase(const_reference elem)
 {
-    search_in(max_revision);
     h.erase(elem);
 }
 
 template<typename T>
 size_t tree<T>::count(const_reference elem) const
 {
-    search_in(max_revision);
     return h.count(elem);
 }
 
 template<typename T>
 void tree<T>::check_rb_properties() const
 {
-    search_in(max_revision);
     h.check_rb_properties();
 }
 
 template<typename T>
 size_t tree<T>::depth() const
 {
-    search_in(max_revision);
     return h.depth();
 }
 
@@ -50,12 +45,6 @@ template<typename T>
 auto tree<T>::end() -> iterator
 {
     return h.end();
-}
-
-template<typename T>
-void tree<T>::search_in(size_t rev)
-{
-    h.search_in(rev);
 }
 
 template<typename T>

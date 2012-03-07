@@ -37,7 +37,6 @@ public:
     void erase(const_reference elem);
     size_t count(const_reference elem) const;
 
-    void search_in(size_t rev);
     void tag_it(size_t rev);
 
     void check_rb_properties() const;
