@@ -277,7 +277,7 @@ auto tree<T>::helper::delete_case6(pnode t) -> pnode
 }
 
 template<typename T>
-auto tree<T>::helper::insert(pnode t, const_reference val, pnode& parent) -> pnode&
+auto tree<T>::helper::insert(pnode t, const_reference val, pnode& parent) -> pnode
 {
     if (t == nil)
     {
@@ -480,38 +480,78 @@ auto tree<T>::helper::end() -> iterator
 template<typename T>
 auto tree<T>::helper::left(pnode& t) -> pnode&
 {
+    if (t->patch != nullptr && t->patch->what == patch::What::LEFT && t->patch->revision < current_revision)
+        return t->patch->new_;
     return t->left_;
 }
 
 template<typename T>
 auto tree<T>::helper::right(pnode& t) -> pnode&
 {
+    if (t->patch != nullptr && t->patch->what == patch::What::RIGHT && t->patch->revision < current_revision)
+        return t->patch->new_;
     return t->right_;
 }
 
 template<typename T>
 auto tree<T>::helper::parent(pnode& t) -> pnode&
 {
+    if (t->patch != nullptr && t->patch->what == patch::What::PARENT && t->patch->revision < current_revision)
+        return t->patch->new_;
     return t->parent;
 }
 
 template<typename T>
-auto tree<T>::helper::set_left(pnode& t, pnode& left) -> pnode&
+auto tree<T>::helper::set_left(pnode& t, const pnode& left) -> pnode
 {
+    if (t->patch == nullptr)
+    {
+        t->patch = ppatch(new patch(patch::What::LEFT, left, revision++));
+        return t;
+    }
+    else
+    {
+        revision++;
+        return t->apply();
+    }
     t->left_ = left;
     return t;
 }
 
 template<typename T>
-auto tree<T>::helper::set_right(pnode& t, pnode& right) -> pnode&
+auto tree<T>::helper::set_right(pnode& t, const pnode& right) -> pnode
 {
-    t->right_ = right;
+    if (t->patch == nullptr)
+    {
+        t->patch = ppatch(new patch(patch::What::RIGHT, right, revision++));
+        return t;
+    }
+    else
+    {
+        revision++;
+        return t->apply();
+    }
+}
+
+template<typename T>
+auto tree<T>::helper::set_parent(pnode& t, const pnode& parent) -> pnode
+{
+    if (t->patch == nullptr)
+    {
+        t->patch = ppatch(new patch(patch::What::PARENT, parent, revision++));
+        return t;
+    }
+    else
+    {
+        revision++;
+        return t->apply();
+    }
+    t->parent = parent;
     return t;
 }
 
 template<typename T>
-auto tree<T>::helper::set_parent(pnode& t, pnode& parent) -> pnode&
+void tree<T>::helper::search_in(size_t rev)
 {
-    t->parent = parent;
-    return t;
+    current_revision = rev;
 }

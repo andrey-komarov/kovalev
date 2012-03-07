@@ -48,6 +48,12 @@ auto tree<T>::end() -> iterator
 }
 
 template<typename T>
+void tree<T>::search_in(size_t rev)
+{
+    h.search_in(rev);
+}
+
+template<typename T>
 void print(std::ostream& out, const typename tree<T>::pnode& t)
 {
     if (t == nil<T>())

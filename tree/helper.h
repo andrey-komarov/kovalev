@@ -15,15 +15,17 @@ public:
     iterator begin();
     iterator end();
 
+    void search_in(size_t rev);
+
     size_t depth();
     void check_rb_properties();
 private:
     pnode& left(pnode&);
     pnode& right(pnode&);
     pnode& parent(pnode&);
-    pnode& set_left(pnode&, pnode&);
-    pnode& set_right(pnode&, pnode&);
-    pnode& set_parent(pnode&, pnode&);
+    pnode set_left(pnode&, const pnode&);
+    pnode set_right(pnode&, const pnode&);
+    pnode set_parent(pnode&, const pnode&);
 
     pnode insert_case1(pnode);
     pnode insert_case2(pnode);
@@ -44,18 +46,18 @@ private:
     typename node::Color color(const pnode&);
 
     size_t depth(pnode&);
-    pnode& insert(pnode, const_reference, pnode& parent);
+    pnode insert(pnode, const_reference, pnode& parent);
     pnode erase(pnode, const_reference);
     pnode erase(pnode);
     size_t count(pnode&, const_reference);
     void check_black_depth(pnode& t, size_t depth_need, size_t depth = 0);
 
-    tree<T>* t;
     pnode fixit_insert;
     pnode fixit_delete;
     bool need_delete_fixup;
     size_t revision;
     size_t current_revision;
+    tree<T>* t;
 };
 
 #include "helper.hpp"

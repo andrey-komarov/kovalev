@@ -4,19 +4,18 @@
 template<typename T>
 struct tree<T>::patch
 {
-    enum What
+    enum class What
     {
-        LEFT, RIGHT
+        LEFT, RIGHT, PARENT
     };
 
     typedef typename tree<T>::pnode pnode;
 
     What what;
-    pnode new_son;
-    pnode p;
+    pnode new_;
     size_t revision;
 
-    patch(What what, pnode new_son, pnode p, size_t revision);
+    patch(What what, pnode new_, size_t revision);
 };
 
 #include "patch.hpp"

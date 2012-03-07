@@ -37,6 +37,8 @@ public:
     void erase(const_reference elem);
     size_t count(const_reference elem);
 
+    void search_in(size_t rev);
+
     void check_rb_properties() ;
 
     iterator begin();

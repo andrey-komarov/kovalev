@@ -10,7 +10,10 @@ struct tree<T>::node
     };
 
     node(const_reference, Color, pnode nil);
+    node(const_reference, Color, pnode left, pnode right, pnode parent);
     node();
+
+    pnode apply() const;
 
     static size_t depth(typename tree<T>::pnode&);
     static typename tree<T>::pnode insert(typename tree<T>::pnode, const_reference, const typename tree<T>::pnode& parent = nil<T>());
