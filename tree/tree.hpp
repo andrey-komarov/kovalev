@@ -2,7 +2,7 @@
 
 template<typename T>
 tree<T>::tree() :
-    h()
+    h(this)
 {}
 
 template<typename T>
@@ -33,6 +33,18 @@ template<typename T>
 size_t tree<T>::depth() const
 {
     return h.depth();
+}
+
+template<typename T>
+auto tree<T>::begin() -> iterator
+{
+    return h.begin();
+}
+
+template<typename T>
+auto tree<T>::end() -> iterator
+{
+    return h.end();
 }
 
 template<typename T>

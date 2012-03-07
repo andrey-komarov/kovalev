@@ -4,7 +4,7 @@
 template<typename T>
 struct tree<T>::helper
 {
-    helper();
+    helper(tree<T>*);
 private:
     pnode nil;
     pnode root;
@@ -12,6 +12,9 @@ public:
     void insert(const_reference);
     void erase(const_reference);
     size_t count(const_reference) const;
+    iterator begin();
+    iterator end();
+
     size_t depth() const;
     void check_rb_properties() const;
 private:
@@ -40,6 +43,7 @@ private:
     size_t count(const pnode&, const_reference) const;
     void check_black_depth(pnode& t, size_t depth_need, size_t depth = 0) const;
 
+    tree<T>* t;
     pnode fixit_insert;
     pnode fixit_delete;
     bool need_delete_fixup;

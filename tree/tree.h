@@ -20,13 +20,12 @@ struct tree
     typedef const T& const_reference;
     typedef size_t size_type;
     typedef ptrdiff_t difference_type;
+    struct iterator;
 
 private:
     struct node;
     struct patch;
     struct helper;
-    struct iterator;
-
 
     typedef std::shared_ptr<patch> ppatch;
     typedef std::shared_ptr<node> pnode;
@@ -53,8 +52,9 @@ template<typename T>
 typename tree<T>::pnode& nil();
 
 #include "patch.h"
+#include "helper.h"
 #include "treenode.h"
-#include "iterator.hpp"
+#include "iterator.h"
 #include "tree.hpp"
 
 #endif // TREE_H

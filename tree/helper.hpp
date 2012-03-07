@@ -1,13 +1,14 @@
 #include "helper.h"
 
 template<typename T>
-tree<T>::helper::helper() :
+tree<T>::helper::helper(tree<T>* t) :
     nil(new node()),
     root(nil),
     fixit_insert(nil),
     fixit_delete(nil),
     need_delete_fixup(false),
-    revision(0)
+    revision(0),
+t(t)
 {}
 
 
@@ -442,4 +443,23 @@ void tree<T>::helper::check_black_depth(pnode& t, size_t depth_need, size_t dept
     depth += t->color == Color::BLACK ? 1 : 0;
     check_black_depth(t->left, depth_need, depth);
     check_black_depth(t->right, depth_need, depth);
+}
+
+template<typename T>
+auto tree<T>::helper::begin() -> iterator
+{
+    pnode first = root;
+    if (first == nil)
+        return end();
+    while (first->left != nil)
+    {
+        first = first->left;
+    }
+    return iterator(t, first);
+}
+
+template<typename T>
+auto tree<T>::helper::end() -> iterator
+{
+    return iterator(t, nil);
 }

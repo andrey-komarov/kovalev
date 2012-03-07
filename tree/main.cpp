@@ -51,9 +51,13 @@ int main()
 
     for (int i = 0; i < 10; i++)
         t.insert(2 * i);
-    for (int i = 0; i < 5; i++)
-        t.erase(4 * i);
-    for (int i = 0; i < 20; i++)
-        cerr << t.count(i);
-    t.erase(0);
+//    for (int i = 0; i < 5; i++)
+//        t.erase(4 * i);
+//    for (int i = 0; i < 20; i++)
+//        cerr << t.count(i);
+//    t.erase(0);
+
+    for (auto x : t)
+        cerr << x << " ";
+
 }
