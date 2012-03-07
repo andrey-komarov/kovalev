@@ -1,6 +1,6 @@
 template<typename T>
-tree<T>::iterator::iterator(tree<T>* t, typename tree<T>::pnode n) :
-    t(t), n(n)
+tree<T>::iterator::iterator(tree<T>* t, pnode n, size_t rev) :
+t(t), n(n), revision(rev)
 {}
 
 template<typename T>
@@ -39,23 +39,23 @@ template<typename T>
 auto tree<T>::iterator::operator++() -> iterator&
 {
     pnode& nil = t->h.nil;
-    if (t->h.right(n) != nil)
+    if (t->h.right(n, revision) != nil)
     {
-        n = t->h.right(n);
-        while (t->h.left(n) != nil)
-            n = t->h.left(n);
+        n = t->h.right(n, revision);
+        while (t->h.left(n, revision) != nil)
+            n = t->h.left(n, revision);
         return *this;
     }
     while (true)
     {
-        if (t->h.parent(n) == nil)
+        if (t->h.parent(n, revision) == nil)
             return *this = t->end();
-        if (n == t->h.left(t->h.parent(n)))
+        if (n == t->h.left(t->h.parent(n, revision)))
         {
-            n = t->h.parent(n);
+            n = t->h.parent(n, revision);
             return *this;
         }
-        n = t->h.parent(n);
+        n = t->h.parent(n, revision);
     }
 }
 

@@ -16,6 +16,7 @@ public:
     void erase(const_reference);
     size_t count(const_reference) const;
     iterator begin();
+    iterator begin(size_t rev);
     iterator end();
 
     void tag_it(size_t rev);

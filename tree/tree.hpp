@@ -42,6 +42,12 @@ auto tree<T>::begin() -> iterator
 }
 
 template<typename T>
+auto tree<T>::begin(size_t rev) -> iterator
+{
+    return h.begin(rev);
+}
+
+template<typename T>
 auto tree<T>::end() -> iterator
 {
     return h.end();

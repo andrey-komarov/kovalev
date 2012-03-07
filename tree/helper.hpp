@@ -285,12 +285,16 @@ auto tree<T>::helper::insert(pnode t, const_reference val, pnode& parent) -> pno
     if (val < t->val)
     {
         // Очень плохой код. Ничего не понятно. Простите меня
-        t = set_left(t, set_parent(insert(left(t), val, t), t));
+        pnode tmp = insert(left(t), val, t);
+        pnode tmp2 = set_parent(tmp, t);
+        t = set_left(t, tmp2);
         return t;
     }
     else
     {
-        t = set_right(t, set_parent(insert(right(t), val, t), t));
+        pnode tmp = insert(right(t), val, t);
+        pnode tmp2 = set_parent(tmp, t);
+        t = set_right(t, tmp2);
         return t;
     }
 }
@@ -379,7 +383,7 @@ void tree<T>::helper::insert(const_reference val)
     root = insert(root, val, nil);
     if (fixit_insert != nil)
     {
-        insert_case1(fixit_insert);
+        root = insert_case1(fixit_insert);
         fixit_insert = nil;
     }
     while (parent(root) != nil)
@@ -451,6 +455,12 @@ void tree<T>::helper::check_black_depth(const pnode& t, size_t depth_need, size_
 template<typename T>
 auto tree<T>::helper::begin() -> iterator
 {
+    return begin(revision);
+}
+
+template<typename T>
+auto tree<T>::helper::begin(size_t revision) -> iterator
+{
     pnode first = root;
     if (first == nil)
         return end();
@@ -458,13 +468,13 @@ auto tree<T>::helper::begin() -> iterator
     {
         first = left(first);
     }
-    return iterator(t, first);
+    return iterator(t, first, revision);
 }
 
 template<typename T>
 auto tree<T>::helper::end() -> iterator
 {
-    return iterator(t, nil);
+    return iterator(t, nil, 0);
 }
 
 template<typename T>

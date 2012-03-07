@@ -26,10 +26,10 @@ private:
     struct patch;
     struct helper;
 
-    typedef std::shared_ptr<patch> ppatch;
-    typedef std::shared_ptr<node> pnode;
-//    typedef node* pnode;
-//    typedef patch* ppatch;
+//    typedef std::shared_ptr<patch> ppatch;
+//    typedef std::shared_ptr<node> pnode;
+    typedef node* pnode;
+    typedef patch* ppatch;
 
 public:
     tree();
@@ -43,6 +43,7 @@ public:
 
     iterator begin();
     iterator end();
+    iterator begin(size_t);
 
     size_t depth() const;
 
