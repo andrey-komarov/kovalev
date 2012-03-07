@@ -162,24 +162,41 @@ typename tree<T>::pnode tree<T>::helper::insert_case5(typename tree<T>::pnode n)
 }
 
 template<typename T>
+<<<<<<< HEAD
 typename tree<T>::pnode tree<T>::helper::delete_case1(typename tree<T>::pnode t)
 {
     if (t->parent != nil<T>())
         return delete_case2<T>(t);
     t->color = tree<T>::node::Color::BLACK;
+=======
+auto tree<T>::helper::delete_case1(pnode t) -> pnode
+{
+    if (t->parent != nil)
+        return delete_case2(t);
+    t->color = node::Color::BLACK;
+>>>>>>> 82411e1... теперь и удаление няшное
     return t;
 }
 
 template<typename T>
+<<<<<<< HEAD
 typename tree<T>::pnode tree<T>::helper::delete_case2(typename tree<T>::pnode t)
 {
     typedef typename tree<T>::node::Color Color;
     auto s = brother<T>(t);
     if (color<T>(s) == Color::RED)
+=======
+auto tree<T>::helper::delete_case2(pnode t) -> pnode
+{
+    typedef typename tree<T>::node::Color Color;
+    auto s = brother(t);
+    if (color(s) == Color::RED)
+>>>>>>> 82411e1... теперь и удаление няшное
     {
         t->parent->color = Color::RED;
         s->color = Color::BLACK;
         if (t == t->parent->left)
+<<<<<<< HEAD
             rotate_left<T>(t->parent);
         else
             rotate_right<T>(t->parent);
@@ -264,10 +281,93 @@ typename tree<T>::pnode tree<T>::helper::delete_case6(typename tree<T>::pnode t)
         s->left->color = Color::BLACK;
         return rotate_right<T>(t->parent);
     }
+=======
+            rotate_left(t->parent);
+        else
+            rotate_right(t->parent);
+    }
+    return delete_case3(t);
 }
 
+template<typename T>
+auto tree<T>::helper::delete_case3(pnode t) -> pnode
+{
+    typedef typename tree<T>::node::Color Color;
+    const auto BLACK = Color::BLACK;
+    auto s = brother(t);
+    if (color(t->parent) == BLACK && color(s) == BLACK && color(s->left) == BLACK && color(s->right) == BLACK)
+    {
+        s->color = Color::RED;
+        return delete_case1(t->parent);
+    }
+    else
+        return delete_case4(t);
+>>>>>>> 82411e1... теперь и удаление няшное
+}
 
+template<typename T>
+auto tree<T>::helper::delete_case4(pnode t) -> pnode
+{
+    typedef typename tree<T>::node::Color Color;
+    auto s = brother(t);
+    if (color(t->parent) == Color::RED &&
+            color(s) == Color::BLACK &&
+            color(s->left) == Color::BLACK &&
+            color(s->right) == Color::BLACK)
+    {
+        s->color = Color::RED;
+        t->parent->color = Color::BLACK;
+        return t;
+    }
+    else
+        return delete_case5(t);
+}
 
+template<typename T>
+auto tree<T>::helper::delete_case5(pnode t) -> pnode
+{
+    typedef typename tree<T>::node::Color Color;
+    auto s = brother(t);
+    if (s->color == Color::BLACK)
+    {
+        if (t == t->parent->left &&
+                color(s->right) == Color::BLACK &&
+                color(s->left) == Color::RED)
+        {
+            s->color = Color::RED;
+            s->left->color = Color::BLACK;
+            rotate_right(s);
+        }
+        else if (t == t->parent->right &&
+                 color(s->left) == Color::BLACK &&
+                 color(s->right) == Color::RED)
+        {
+            s->color = Color::RED;
+            s->right->color = Color::BLACK;
+            rotate_left(s);
+        }
+    }
+    return delete_case6(t);
+}
+
+template<typename T>
+auto tree<T>::helper::delete_case6(pnode t) -> pnode
+{
+    typedef typename tree<T>::node::Color Color;
+    auto s = brother(t);
+    s->color = t->parent->color;
+    t->parent->color = Color::BLACK;
+    if (t == t->parent->left)
+    {
+        s->right->color = Color::BLACK;
+        return rotate_left(t->parent);
+    }
+    else
+    {
+        s->left->color = Color::BLACK;
+        return rotate_right(t->parent);
+    }
+}
 
 template<typename T>
 typename tree<T>::pnode tree<T>::helper::insert(typename tree<T>::pnode t, typename tree<T>::const_reference val, const typename tree<T>::pnode& parent)
@@ -296,6 +396,63 @@ typename tree<T>::pnode tree<T>::helper::insert(typename tree<T>::pnode t, typen
     }
 }
 
+<<<<<<< HEAD
+=======
+
+template<typename T>
+auto tree<T>::helper::erase(pnode t) -> pnode
+{
+    typedef typename tree<T>::pnode pnode;
+    typedef typename tree<T>::node::Color Color;
+    pnode y; // то, что хотим удалять. у него ноль-один сын
+    if (t->left == nil || t->right == nil)
+        y = t;
+    else
+    {
+        y = t->right;
+        while (y->left != nil)
+            y = y->left;
+    }
+    pnode x;
+    if (y->left != nil)
+        x = y->left;
+    else
+        x = y->right;
+    x->parent = y->parent;
+    if (y->parent == nil)
+    {
+        need_delete_fixup = true;
+        fixit_delete = x;
+        return x;
+    }
+    else if (y == y->parent->left)
+        y->parent->left = x;
+    else
+        y->parent->right = x;
+    if (y != t)
+        t->val = y->val;
+    if (y->color == Color::BLACK)
+    {
+        need_delete_fixup = true;
+        fixit_delete = x;
+    }
+    return y;
+}
+
+template<typename T>
+auto tree<T>::helper::erase(pnode t, const_reference val) -> pnode
+{
+    if (t == nil)
+        return t;
+    if (t->val == val)
+        return erase(t);
+    else if (val < t->val)
+        return erase(t->left, val);
+    else
+        return erase(t->right, val);
+}
+
+>>>>>>> 82411e1... теперь и удаление няшное
 template<typename T>
 typename tree<T>::pnode tree<T>::helper::erase(typename tree<T>::pnode t)
 {
@@ -310,6 +467,7 @@ typename tree<T>::pnode tree<T>::helper::erase(typename tree<T>::pnode t)
         while (y->left != nil<T>())
             y = y->left;
     }
+<<<<<<< HEAD
     pnode x;
     if (y->left != nil<T>())
         x = y->left;
@@ -317,6 +475,19 @@ typename tree<T>::pnode tree<T>::helper::erase(typename tree<T>::pnode t)
         x = y->right;
     x->parent = y->parent;
     if (y->parent == nil<T>())
+=======
+    while (root->parent != nil)
+        root = root->parent;
+}
+
+template<typename T>
+void tree<T>::helper::erase(const_reference val)
+{
+    if (count(val) == 0)
+        return;
+    root = erase(root, val);
+    if (need_delete_fixup)
+>>>>>>> 82411e1... теперь и удаление няшное
     {
         need_delete_fixup() = true;
         fixit_delete<T>() = x;

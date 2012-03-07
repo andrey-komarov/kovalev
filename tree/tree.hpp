@@ -8,6 +8,7 @@ tree<T>::tree() :
 template<typename T>
 void tree<T>::insert(const_reference val)
 {
+<<<<<<< HEAD
     if (count(val) != 0)
         return;
     root = node::insert(root, val);
@@ -18,6 +19,21 @@ void tree<T>::insert(const_reference val)
     }
     while (root->parent != nil<T>())
         root = root->parent;
+=======
+    h.insert(elem);
+}
+
+template<typename T>
+void tree<T>::erase(const_reference elem)
+{
+    h.erase(elem);
+}
+
+template<typename T>
+size_t tree<T>::count(const_reference elem)
+{
+    return h.count(elem);
+>>>>>>> 82411e1... теперь и удаление няшное
 }
 
 template<typename T>

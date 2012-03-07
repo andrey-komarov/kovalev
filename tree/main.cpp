@@ -42,9 +42,18 @@ int main()
 //    for (int i = 0; i < 20; i++)
 //        t.erase(i);
     for (int i = 0; i < 10; i++)
+<<<<<<< HEAD
         t.insert(i);
     for (tree<int>::iterator it = t.begin(); it != t.end(); it++)
     {
         cerr << *it << " ";
     }
+=======
+        t.insert(2 * i);
+    for (int i = 0; i < 5; i++)
+        t.erase(4 * i);
+    for (int i = 0; i < 20; i++)
+        cerr << t.count(i);
+    t.erase(0);
+>>>>>>> 82411e1... теперь и удаление няшное
 }
