@@ -18,6 +18,13 @@ public:
     size_t depth() const;
     void check_rb_properties() const;
 private:
+    pnode& left(pnode&);
+    pnode& right(pnode&);
+    pnode& parent(pnode&);
+    pnode& set_left(pnode&, pnode&);
+    pnode& set_right(pnode&, pnode&);
+    pnode& set_parent(pnode&, pnode&);
+
     pnode insert_case1(pnode);
     pnode insert_case2(pnode);
     pnode insert_case3(pnode);
@@ -41,13 +48,14 @@ private:
     pnode erase(pnode, const_reference);
     pnode erase(pnode);
     size_t count(const pnode&, const_reference) const;
-    void check_black_depth(pnode& t, size_t depth_need, size_t depth = 0) const;
+    void check_black_depth(const pnode& t, size_t depth_need, size_t depth = 0) const;
 
     tree<T>* t;
     pnode fixit_insert;
     pnode fixit_delete;
     bool need_delete_fixup;
     size_t revision;
+    size_t current_revision;
 };
 
 #include "helper.hpp"

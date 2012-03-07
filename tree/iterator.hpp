@@ -39,18 +39,18 @@ template<typename T>
 auto tree<T>::iterator::operator++() -> iterator&
 {
     pnode& nil = t->h.nil;
-    if (n->right != nil)
+    if (n->right() != nil)
     {
-        n = n->right;
-        while (n->left != nil)
-            n = n->left;
+        n = n->right();
+        while (n->left() != nil)
+            n = n->left();
         return *this;
     }
     while (true)
     {
         if (n->parent == nil)
             return *this = t->end();
-        if (n == n->parent->left)
+        if (n == n->parent->left())
         {
             n = n->parent;
             return *this;

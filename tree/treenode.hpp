@@ -2,7 +2,7 @@
 
 template<typename T>
 tree<T>::node::node() :
-    left(nullptr), right(nullptr), parent(nullptr),
+    left_(nullptr), right_(nullptr), parent(nullptr),
     color(Color::BLACK)
 {
 
@@ -11,6 +11,18 @@ tree<T>::node::node() :
 template<typename T>
 tree<T>::node::node(const_reference val, Color color, pnode nil) :
     val(val),
-    left(nil), right(nil), parent(nil),
+    left_(nil), right_(nil), parent(nil),
     color(color)
 {}
+
+template<typename T>
+auto tree<T>::node::left() -> pnode&
+{
+    return left_;
+}
+
+template<typename T>
+auto tree<T>::node::right() -> pnode&
+{
+    return right_;
+}

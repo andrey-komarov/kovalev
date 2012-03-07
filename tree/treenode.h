@@ -18,13 +18,13 @@ struct tree<T>::node
     static typename tree<T>::pnode erase(typename tree<T>::pnode);
     static size_t count(typename tree<T>::pnode&, const_reference);
 
-    pnode& left_(size_t revision);
-    pnode& right_(size_t revision);
+    pnode& left();
+    pnode& right();
     pnode& parent_(size_t revision);
 
 private:
     T val;
-    pnode left, right, parent;
+    pnode left_, right_, parent;
     Color color;
     ppatch patch;
 };
