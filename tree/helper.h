@@ -11,12 +11,12 @@ private:
 public:
     void insert(const_reference);
     void erase(const_reference);
-    size_t count(const_reference) const;
+    size_t count(const_reference);
     iterator begin();
     iterator end();
 
-    size_t depth() const;
-    void check_rb_properties() const;
+    size_t depth();
+    void check_rb_properties();
 private:
     pnode& left(pnode&);
     pnode& right(pnode&);
@@ -32,9 +32,9 @@ private:
     pnode insert_case5(pnode);
     pnode rotate_left(pnode&);
     pnode rotate_right(pnode&);
-    pnode grandparent(const pnode&);
-    pnode uncle(const pnode& n);
-    pnode brother(const pnode& n);
+    pnode grandparent(pnode&);
+    pnode uncle(pnode& n);
+    pnode brother(pnode& n);
     pnode delete_case1(pnode);
     pnode delete_case2(pnode);
     pnode delete_case3(pnode);
@@ -43,12 +43,12 @@ private:
     pnode delete_case6(pnode);
     typename node::Color color(const pnode&);
 
-    size_t depth(const pnode&) const;
-    pnode insert(pnode, const_reference, const pnode& parent);
+    size_t depth(pnode&);
+    pnode& insert(pnode, const_reference, pnode& parent);
     pnode erase(pnode, const_reference);
     pnode erase(pnode);
-    size_t count(const pnode&, const_reference) const;
-    void check_black_depth(const pnode& t, size_t depth_need, size_t depth = 0) const;
+    size_t count(pnode&, const_reference);
+    void check_black_depth(pnode& t, size_t depth_need, size_t depth = 0);
 
     tree<T>* t;
     pnode fixit_insert;

@@ -37,12 +37,12 @@ public:
     void erase(const_reference elem);
     size_t count(const_reference elem);
 
-    void check_rb_properties() const;
+    void check_rb_properties() ;
 
     iterator begin();
     iterator end();
 
-    size_t depth() const;
+    size_t depth() ;
 
 private:
     helper h;

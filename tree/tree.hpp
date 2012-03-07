@@ -24,13 +24,13 @@ size_t tree<T>::count(const_reference elem)
 }
 
 template<typename T>
-void tree<T>::check_rb_properties() const
+void tree<T>::check_rb_properties()
 {
     h.check_rb_properties();
 }
 
 template<typename T>
-size_t tree<T>::depth() const
+size_t tree<T>::depth()
 {
     return h.depth();
 }
