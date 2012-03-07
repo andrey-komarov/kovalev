@@ -566,5 +566,5 @@ void tree<T>::helper::search_in(size_t rev)
 template<typename T>
 void tree<T>::helper::tag_it(size_t rev)
 {
-    roots[rev] = root;
+    roots[rev] = make_pair(revision, root);
 }

@@ -17,16 +17,16 @@ auto tree<T>::iterator::operator*() -> const_reference
     return n->val;
 }
 
-template<typename T>
-auto tree<T>::iterator::operator->() -> pointer
-{
-    return *(n->val);
-}
+//template<typename T>
+//auto tree<T>::iterator::operator->() -> pointer
+//{
+//    return *(n->val);
+//}
 
 template<typename T>
 bool tree<T>::iterator::operator==(const iterator& it) const
 {
-    return t == it.t && n == it.n;
+    return (revision == it.revision || n == t->h.nil) && t == it.t && n == it.n;
 }
 
 template<typename T>

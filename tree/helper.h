@@ -2,6 +2,7 @@
 #define HELPER_H
 
 #include <map>
+#include <utility>
 
 template<typename T>
 struct tree<T>::helper
@@ -61,7 +62,7 @@ private:
     size_t revision;
     size_t current_revision;
     tree<T>* t;
-    std::map<size_t, pnode> roots;
+    std::map<size_t, std::pair<size_t, pnode> > roots;
 };
 
 #include "helper.hpp"

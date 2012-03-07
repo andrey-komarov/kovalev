@@ -16,7 +16,7 @@ struct tree<T>::iterator
     iterator& operator=(const iterator&);
 
     const_reference operator*();
-    pointer operator->();
+//    pointer operator->();
     iterator& operator++();
     iterator operator++(int);
     bool operator==(const iterator&) const;
@@ -24,6 +24,7 @@ struct tree<T>::iterator
 private:
     iterator (tree<T>* t, pnode n);
 
+    size_t revision;
     tree<T>* t;
     pnode n;
     friend class tree<T>;
