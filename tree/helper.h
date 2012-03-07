@@ -1,6 +1,8 @@
 #ifndef HELPER_H
 #define HELPER_H
 
+#include <map>
+
 template<typename T>
 struct tree<T>::helper
 {
@@ -16,6 +18,7 @@ public:
     iterator end();
 
     void search_in(size_t rev);
+    void tag_it(size_t rev);
 
     size_t depth();
     void check_rb_properties();
@@ -23,9 +26,9 @@ private:
     pnode& left(pnode&);
     pnode& right(pnode&);
     pnode& parent(pnode&);
-    pnode set_left(pnode&, const pnode&);
-    pnode set_right(pnode&, const pnode&);
-    pnode set_parent(pnode&, const pnode&);
+    pnode set_left(pnode, const pnode&);
+    pnode set_right(pnode, const pnode&);
+    pnode set_parent(pnode, const pnode&);
 
     pnode insert_case1(pnode);
     pnode insert_case2(pnode);
@@ -58,6 +61,7 @@ private:
     size_t revision;
     size_t current_revision;
     tree<T>* t;
+    std::map<size_t, pnode> roots;
 };
 
 #include "helper.hpp"

@@ -47,18 +47,19 @@ int main()
 //    {
 //        cerr << *it << " ";
 //    }
-    t.insert(1);
-
-    for (int i = 0; i < 1000; i++)
-    {
-        t.insert(i % 100);
-        t.check_rb_properties();
-    }
-    for (int i = 0; i < 990; i++)
-    {
-        t.check_rb_properties();
-        t.erase(i % 100);
-    }
+    for (int i =0; i < 100; i++)
+        t.insert(i);
+//    t.search_in(100);
+//    for (int i = 0; i < 1000; i++)
+//    {
+//        t.insert(i % 100);
+//        t.check_rb_properties();
+//    }
+//    for (int i = 0; i < 990; i++)
+//    {
+//        t.check_rb_properties();
+//        t.erase(i % 100);
+//    }
 //    for (int i = 0; i < 5; i++)
 //        t.erase(4 * i);
 //    for (int i = 0; i < 20; i++)

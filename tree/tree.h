@@ -12,6 +12,8 @@
 template<typename T>
 struct tree
 {
+    static const size_t max_revision = ((long long)1) << 60;
+
     typedef T key_type;
     typedef T value_type;
     typedef T* pointer;
@@ -30,6 +32,7 @@ private:
     typedef std::shared_ptr<patch> ppatch;
     typedef std::shared_ptr<node> pnode;
 //    typedef node* pnode;
+//    typedef patch* ppatch;
 
 public:
     tree();
@@ -38,6 +41,8 @@ public:
     size_t count(const_reference elem);
 
     void search_in(size_t rev);
+    void tag_it(size_t rev);
+
 
     void check_rb_properties() ;
 

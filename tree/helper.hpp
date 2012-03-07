@@ -282,8 +282,8 @@ auto tree<T>::helper::insert(pnode t, const_reference val, pnode& parent) -> pno
     if (t == nil)
     {
         typedef typename tree<T>::node node;
-        t = pnode(new node(val, node::Color::RED, nil));
-        t = set_parent(t, parent);
+        t = pnode(new node(val, node::Color::RED, nil, nil, parent));
+//        t = set_parent(t, parent);
         fixit_insert = t;
         return t;
     }
@@ -292,14 +292,17 @@ auto tree<T>::helper::insert(pnode t, const_reference val, pnode& parent) -> pno
 //        return t;
     if (val < t->val)
     {
-        t = set_left(t, insert(left(t), val, t));
-        t = set_left(t, set_parent(left(t), t));
+//        t = set_left(t, insert(left(t), val, t));
+//        t = set_left(t, set_parent(left(t), t));
+        // Ну что за ФП?..
+        t = set_left(t, set_parent(insert(left(t), val, t), t));
         return t;
     }
     else
     {
-        t = set_right(t, insert(right(t), val, t));
-        t = set_right(t, set_parent(right(t), t));
+//        t = set_right(t, insert(right(t), val, t));
+//        t = set_right(t, set_parent(right(t), t));
+        t = set_right(t, set_parent(insert(right(t), val, t), t));
         return t;
     }
 }
@@ -502,11 +505,13 @@ auto tree<T>::helper::parent(pnode& t) -> pnode&
 }
 
 template<typename T>
-auto tree<T>::helper::set_left(pnode& t, const pnode& left) -> pnode
+auto tree<T>::helper::set_left(pnode t, const pnode& left_) -> pnode
 {
+    if (left(t) == left_)
+        return t;
     if (t->patch == nullptr)
     {
-        t->patch = ppatch(new patch(patch::What::LEFT, left, revision++));
+        t->patch = ppatch(new patch(patch::What::LEFT, left_, revision++));
         return t;
     }
     else
@@ -514,16 +519,18 @@ auto tree<T>::helper::set_left(pnode& t, const pnode& left) -> pnode
         revision++;
         return t->apply();
     }
-    t->left_ = left;
+    t->left_ = left_;
     return t;
 }
 
 template<typename T>
-auto tree<T>::helper::set_right(pnode& t, const pnode& right) -> pnode
+auto tree<T>::helper::set_right(pnode t, const pnode& right_) -> pnode
 {
+    if (right(t) == right_)
+        return t;
     if (t->patch == nullptr)
     {
-        t->patch = ppatch(new patch(patch::What::RIGHT, right, revision++));
+        t->patch = ppatch(new patch(patch::What::RIGHT, right_, revision++));
         return t;
     }
     else
@@ -534,11 +541,13 @@ auto tree<T>::helper::set_right(pnode& t, const pnode& right) -> pnode
 }
 
 template<typename T>
-auto tree<T>::helper::set_parent(pnode& t, const pnode& parent) -> pnode
+auto tree<T>::helper::set_parent(pnode t, const pnode& parent_) -> pnode
 {
+    if (parent(t) == parent_)
+        return t;
     if (t->patch == nullptr)
     {
-        t->patch = ppatch(new patch(patch::What::PARENT, parent, revision++));
+        t->patch = ppatch(new patch(patch::What::PARENT, parent_, revision++));
         return t;
     }
     else
@@ -546,12 +555,16 @@ auto tree<T>::helper::set_parent(pnode& t, const pnode& parent) -> pnode
         revision++;
         return t->apply();
     }
-    t->parent = parent;
-    return t;
 }
 
 template<typename T>
 void tree<T>::helper::search_in(size_t rev)
 {
     current_revision = rev;
+}
+
+template<typename T>
+void tree<T>::helper::tag_it(size_t rev)
+{
+    roots[rev] = root;
 }

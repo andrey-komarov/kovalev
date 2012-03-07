@@ -19,7 +19,7 @@ patch(nullptr)
 
 template<typename T>
 tree<T>::node::node(const_reference val, Color color, pnode left, pnode right, pnode parent) :
-val(val), color(color), left_(left), right_(right), parent(parent)
+val(val), left_(left), right_(right), parent(parent), color(color), patch(nullptr)
 {}
 
 template<typename T>
