@@ -67,6 +67,7 @@ int main()
 
 //    for (auto x : t)
 //        cerr << x << " ";
-    cerr << t.depth();
-
+//    cerr << t;
+    for (auto i : t)
+        cerr << i << " ";
 }
