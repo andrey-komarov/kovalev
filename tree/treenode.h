@@ -26,6 +26,8 @@ private:
     pnode left_, right_, parent;
     Color color;
     ppatch patch;
+
+    friend class tree<T>;
 };
 
 #include "treenode.hpp"

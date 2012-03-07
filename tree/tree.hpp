@@ -20,21 +20,21 @@ void tree<T>::erase(const_reference elem)
 }
 
 template<typename T>
-size_t tree<T>::count(const_reference elem)
+size_t tree<T>::count(const_reference elem) const
 {
     search_in(max_revision);
     return h.count(elem);
 }
 
 template<typename T>
-void tree<T>::check_rb_properties()
+void tree<T>::check_rb_properties() const
 {
     search_in(max_revision);
     h.check_rb_properties();
 }
 
 template<typename T>
-size_t tree<T>::depth()
+size_t tree<T>::depth() const
 {
     search_in(max_revision);
     return h.depth();

@@ -6,14 +6,9 @@
 #include <memory>
 #include <cassert>
 
-// Расстрел
-#define private public
-
 template<typename T>
 struct tree
 {
-    static const size_t max_revision = ((long long)1) << 60;
-
     typedef T key_type;
     typedef T value_type;
     typedef T* pointer;
@@ -25,6 +20,8 @@ struct tree
     struct iterator;
 
 private:
+    static const size_t max_revision = ((long long)1) << 60;
+
     struct node;
     struct patch;
     struct helper;
@@ -38,18 +35,17 @@ public:
     tree();
     void insert(const_reference elem);
     void erase(const_reference elem);
-    size_t count(const_reference elem);
+    size_t count(const_reference elem) const;
 
     void search_in(size_t rev);
     void tag_it(size_t rev);
 
-
-    void check_rb_properties() ;
+    void check_rb_properties() const;
 
     iterator begin();
     iterator end();
 
-    size_t depth() ;
+    size_t depth() const;
 
 private:
     helper h;

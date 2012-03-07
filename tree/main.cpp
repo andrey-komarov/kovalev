@@ -48,7 +48,7 @@ int main()
 //        cerr << *it << " ";
 //    }
     for (int i =0; i < 100; i++)
-        t.insert(i);
+        t.insert(i / 2);
 //    t.search_in(100);
 //    for (int i = 0; i < 1000; i++)
 //    {
@@ -69,6 +69,7 @@ int main()
 //    for (auto x : t)
 //        cerr << x << " ";
 //    cerr << t;
+
     for (auto i : t)
         cerr << i << " ";
 }
