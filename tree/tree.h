@@ -25,6 +25,8 @@ private:
     struct node;
     struct patch;
     struct helper;
+    struct iterator;
+
 
     typedef std::shared_ptr<patch> ppatch;
     typedef std::shared_ptr<node> pnode;
@@ -38,12 +40,10 @@ public:
 
     void check_rb_properties() const;
 
-    struct iterator;
-
     iterator begin();
     iterator end();
 
-    size_t depth();
+    size_t depth() const;
 
 private:
     helper h;

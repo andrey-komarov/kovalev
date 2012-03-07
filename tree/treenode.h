@@ -9,7 +9,7 @@ struct tree<T>::node
         RED, BLACK
     };
 
-    node(const_reference, Color = Color::RED);
+    node(const_reference, Color, pnode nil);
     node();
 
     static size_t depth(typename tree<T>::pnode&);

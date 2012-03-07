@@ -4,7 +4,6 @@
 template<typename T>
 struct tree<T>::iterator
 {
-//        typedef std::bidirectional_iterator_tag iterator_category; // TODO
     typedef std::forward_iterator_tag iterator_category;
     typedef tree::value_type value_type;
     typedef tree::size_type size_type;

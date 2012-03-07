@@ -9,7 +9,7 @@ tree<T>::node::node() :
 }
 
 template<typename T>
-tree<T>::node::node(const_reference val, Color color) :
+tree<T>::node::node(const_reference val, Color color, pnode nil) :
     val(val),
     left(nil), right(nil), parent(nil),
     color(color)

@@ -5,9 +5,18 @@ template<typename T>
 struct tree<T>::helper
 {
     helper();
-
+private:
+    pnode nil;
+    pnode root;
+public:
+    void insert(const_reference);
+    void erase(const_reference);
+    size_t count(const_reference) const;
+    size_t depth() const;
+    void check_rb_properties() const;
+private:
     pnode insert_case1(pnode);
-    pnode insert_case2(size_t revision);
+    pnode insert_case2(pnode);
     pnode insert_case3(pnode);
     pnode insert_case4(pnode);
     pnode insert_case5(pnode);
@@ -22,16 +31,14 @@ struct tree<T>::helper
     pnode delete_case4(pnode);
     pnode delete_case5(pnode);
     pnode delete_case6(pnode);
-    node::Color color(const pnode&);
+    typename node::Color color(const pnode&);
 
-    size_t depth(pnode&);
-    pnode insert(pnode, const_reference, const pnode& parent = nil<T>());
+    size_t depth(const pnode&) const;
+    pnode insert(pnode, const_reference, const pnode& parent);
     pnode erase(pnode, const_reference);
     pnode erase(pnode);
-    size_t count(pnode&, const_reference);
-
-    pnode nil;
-    pnode root;
+    size_t count(const pnode&, const_reference) const;
+    void check_black_depth(pnode& t, size_t depth_need, size_t depth = 0) const;
 
     pnode fixit_insert;
     pnode fixit_delete;
