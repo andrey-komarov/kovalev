@@ -10,7 +10,7 @@ struct tree<T>::node
     };
 
     node(const_reference, Color, pnode nil);
-    node(const_reference, Color, pnode left, pnode right, pnode parent);
+    node(const_reference, Color, pnode left, pnode right);
     node();
 
     pnode apply() const;
@@ -23,7 +23,7 @@ struct tree<T>::node
 
 private:
     T val;
-    pnode left_, right_, parent;
+    pnode left_, right_;
     Color color;
     ppatch patch;
 

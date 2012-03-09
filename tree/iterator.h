@@ -22,11 +22,13 @@ struct tree<T>::iterator
     bool operator==(const iterator&) const;
     bool operator!=(const iterator&) const;
 private:
-    iterator (tree<T>* t, pnode n, size_t rev);
+    iterator (tree<T>* t, const pnode& n, size_t rev, const std::vector<pnode>& stack);
+    pnode parent() const;
 
     tree<T>* t;
     pnode n;
     size_t revision;
+    std::vector<pnode> stack;
 
     friend class tree<T>;
 };

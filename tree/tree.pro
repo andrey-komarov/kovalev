@@ -1,7 +1,8 @@
 SOURCES += \
     main.cpp \
     tree.hpp \
-    treenode.hpp
+    treenode.hpp \
+    revision.hpp
 
 HEADERS += \
     tree.h \
@@ -11,6 +12,11 @@ HEADERS += \
     patch.hpp \
     helper.h \
     helper.hpp \
-    iterator.h
+    iterator.h \
+    revision.h
 
 QMAKE_CXXFLAGS += -std=c++0x
+
+
+
+

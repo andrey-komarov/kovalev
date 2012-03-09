@@ -1,6 +1,6 @@
 template<typename T>
-tree<T>::iterator::iterator(tree<T>* t, pnode n, size_t rev) :
-t(t), n(n), revision(rev)
+tree<T>::iterator::iterator(tree<T>* t, const pnode& n, size_t rev, const std::vector<pnode>& stack) :
+t(t), n(n), revision(rev), stack(stack)
 {}
 
 template<typename T>
@@ -8,6 +8,8 @@ auto tree<T>::iterator::operator=(const iterator& it) -> iterator&
 {
     t = it.t;
     n = it.n;
+    revision = it.revision;
+    stack = it.stack;
     return *this;
 }
 
@@ -36,26 +38,41 @@ bool tree<T>::iterator::operator!=(const iterator& it) const
 }
 
 template<typename T>
+auto tree<T>::iterator::parent() const -> pnode
+{
+    if (stack.size() < 2)
+        return nullptr;
+    return stack[stack.size() - 2];
+}
+
+template<typename T>
 auto tree<T>::iterator::operator++() -> iterator&
 {
     pnode& nil = t->h.nil;
     if (t->h.right(n, revision) != nil)
     {
         n = t->h.right(n, revision);
+        stack.push_back(n);
         while (t->h.left(n, revision) != nil)
+        {
             n = t->h.left(n, revision);
+            stack.push_back(n);
+        }
         return *this;
     }
     while (true)
     {
-        if (t->h.parent(n, revision) == nil)
+        pnode p(parent());
+        if (p == nullptr)
             return *this = t->end();
-        if (n == t->h.left(t->h.parent(n, revision)))
+        if (n == t->h.left(p))
         {
-            n = t->h.parent(n, revision);
+            n = p;
+            stack.pop_back();
             return *this;
         }
-        n = t->h.parent(n, revision);
+        stack.pop_back();
+        n = p;
     }
 }
 

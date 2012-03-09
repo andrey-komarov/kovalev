@@ -6,6 +6,9 @@
 #include <memory>
 #include <cassert>
 
+size_t ROTATES;
+size_t NODES;
+
 template<typename T>
 struct tree
 {
@@ -25,6 +28,7 @@ private:
     struct node;
     struct patch;
     struct helper;
+    struct revision;
 
 //    typedef std::shared_ptr<patch> ppatch;
 //    typedef std::shared_ptr<node> pnode;
@@ -54,6 +58,7 @@ private:
 template<typename T>
 typename tree<T>::pnode& nil();
 
+#include "revision.h"
 #include "patch.h"
 #include "helper.h"
 #include "treenode.h"

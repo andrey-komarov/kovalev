@@ -4,93 +4,84 @@ template<typename T>
 tree<T>::helper::helper(tree<T>* t) :
     nil(new node()),
     root(nil),
-    fixit_insert(nil),
-    fixit_delete(nil),
-    need_delete_fixup(false),
-    revision(0),
-t(t)
+    revision_(0),
+size_(0),
+t(t),
+need_delete_fixup(false),
+stack()
 {}
 
 
+// в стеке лежит вершина n, вокруг которой крутим. результат кладётся обратно
 template<typename T>
-auto tree<T>::helper::rotate_right(const pnode& t) -> pnode
+auto tree<T>::helper::rotate_right() -> pnode
 {
 /*      n           A
  *     / \         / \
  *    A   c  ==>  a   n
  *   / \             / \
  *  a   b           b   c */
-    auto n = t;
+    auto n = stack.back();
     auto A = left(n);
-    n = set_left(n, right(A));
-    if (left(n) != nil)
-        n = set_left(n, set_parent(left(n), n));
-    A = set_right(A, n);
-    A = set_parent(A, parent(n));
-    n = set_parent(n, A);
-    if (parent(A) != nil)
-    {
-        if (n == left(parent(A)))
-            A = set_parent(A, set_left(parent(A), A));
-        else
-            A = set_parent(A, set_right(parent(A), A));
-    }
-    return A;
+    pnode new_n(new node(n->val, n->color, right(A), right(n)));
+    pnode new_A(new node(A->val, A->color, left(A), new_n));
+    replace_stack_top_with(new_A);
+    return new_A;
 }
 
 template<typename T>
-auto tree<T>::helper::rotate_left(const pnode& t) -> pnode
+auto tree<T>::helper::rotate_left() -> pnode
 {
 /*    n               A
  *   / \             / \
  *  a   A    ==>    n   c
  *     / \         / \
  *    b   c       a   b     */
-    auto n = t;
+    auto n = stack.back();
     auto A = right(n);
-    n = set_right(n, left(A));
-    if (right(n) != nil)
-        n = set_right(n, set_parent(right(n), n));
-    A = set_left(A, n);
-    A = set_parent(A, parent(n));
-    n = set_parent(n, A);
-    if (parent(A) != nil)
-    {
-        if (n == left(parent(A)))
-            A = set_parent(A, set_left(parent(A), A));
-        else
-            A = set_parent(A, set_right(parent(A), A));
-    }
-    return A;
+    pnode new_n(new node(n->val, n->color, left(n), left(A)));
+    pnode new_A(new node(A->val, A->color, new_n, right(A)));
+    replace_stack_top_with(new_A);
+    return new_A;
+}
+
+//все эти родственники считаются от вершины стека
+template<typename T>
+auto tree<T>::helper::grandparent() const -> pnode
+{
+    if (stack.size() <= 2)
+        return nil;
+    else
+        return stack[stack.size() - 3];
 }
 
 template<typename T>
-auto tree<T>::helper::grandparent(const pnode& n) const -> pnode
+auto tree<T>::helper::parent() const -> pnode
 {
-    if (n != nil && parent(n) != nil)
-        return parent(parent(n));
-    return nil;
+    if (stack.size() <= 1)
+        return nil;
+    return stack[stack.size() - 2];
 }
 
 template<typename T>
-auto tree<T>::helper::uncle(const pnode& n) const -> pnode
+auto tree<T>::helper::uncle() const -> pnode
 {
-    auto g = grandparent(n);
+    auto g = grandparent();
     if (g == nil)
         return nil;
-    if (parent(n) == left(g))
+    if (parent() == left(g))
         return right(g);
     else
         return left(g);
 }
 
 template<typename T>
-auto tree<T>::helper::brother(const pnode& n) const -> pnode
+auto tree<T>::helper::brother() const -> pnode
 {
-    if (n == left(parent(n)))
-        return right(parent(n));
+    if (is_left_son())
+        return right(parent());
     else
-        return left(parent(n));
+        return left(parent());
 }
 
 template<typename T>
@@ -100,206 +91,276 @@ auto tree<T>::helper::color(const pnode& t) const -> typename node::Color
 }
 
 template<typename T>
-auto tree<T>::helper::insert_case1(const pnode& n) -> pnode
+bool tree<T>::helper::is_left_son() const
 {
-    if (parent(n) == nil)
+    auto p = parent();
+    return stack.back() == left(p);
+}
+
+template<typename T>
+bool tree<T>::helper::is_right_son() const
+{
+    return !is_left_son();
+}
+
+// все эти операции починки запускаются от вершины стека
+template<typename T>
+auto tree<T>::helper::insert_case1() -> pnode
+{
+    pnode n = stack.back();
+    if (parent() == nil)
     {
         n->color = tree<T>::node::Color::BLACK;
-        return n;
+        return stack.back();
     }
     else
-        return insert_case2(n);
+        return insert_case2();
 }
 
 template<typename T>
-auto tree<T>::helper::insert_case2(const pnode& n) -> pnode
+auto tree<T>::helper::insert_case2() -> pnode
 {
-    if (color(parent(n)) == tree<T>::node::Color::BLACK)
+    pnode n = stack.back();
+    if (color(parent()) == tree<T>::node::Color::BLACK)
         return n;
     else
-        return insert_case3(n);
+        return insert_case3();
 }
 
 template<typename T>
-auto tree<T>::helper::insert_case3(const pnode& n) -> pnode
+auto tree<T>::helper::insert_case3() -> pnode
 {
     typedef typename tree<T>::node::Color Color;
-    auto u(uncle(n));
+    auto u(uncle());
     if (u != nil && u->color == Color::RED)
     {
-        parent(n)->color = Color::BLACK;
+        parent()->color = Color::BLACK;
         u->color = Color::BLACK;
-        auto g(grandparent(n));
+        auto g(grandparent());
         g->color = Color::RED;
-        return insert_case1(g);
+        stack.pop_back();
+        stack.pop_back();
+        return insert_case1();
     }
     else
     {
-        return insert_case4(n);
+        return insert_case4();
     }
 }
 
 template<typename T>
-auto tree<T>::helper::insert_case4(const pnode& n) -> pnode
+auto tree<T>::helper::insert_case4() -> pnode
 {
-    auto g = grandparent(n);
-    if (n == right(parent(n)) && parent(n) == left(g))
+    auto g = grandparent();
+    auto p = parent();
+    if (is_right_son() && p == left(g))
     {
-        return insert_case5(left(rotate_left(parent(n)))); // я сам не очень понимаю. сейчас шесть утра и я хочу спать. но это работает
-    }                                                      // пожалуйста, не бейте меня за такой код.
-    else if (n == left(parent(n)) && parent(n) == right(g))
-        return insert_case5(right(rotate_right(parent(n)))); // аналогично, тут
+        stack.pop_back();
+        rotate_left();
+        stack.push_back(left(stack.back()));
+        return insert_case5();
+    }
+    else if (is_left_son() && parent() == right(g))
+    {
+        stack.pop_back();
+        rotate_right();
+        stack.push_back(right(stack.back()));
+        return insert_case5();
+    }
     else
-        return insert_case5(n);
+        return insert_case5();
 }
 
 template<typename T>
-auto tree<T>::helper::insert_case5(const pnode& n) -> pnode
+auto tree<T>::helper::insert_case5() -> pnode
 {
     typedef typename tree<T>::node::Color Color;
 
-    auto g = grandparent(n);
-    n->parent->color = Color::BLACK;
+    auto g = grandparent();
+    auto p = parent();
+    p->color = Color::BLACK;
     g->color = Color::RED;
-    if (n == left(parent(n)) && parent(n) == left(g))
-        return rotate_right(g);
+    if (is_left_son() && p == left(g))
+    {
+        stack.pop_back();
+        stack.pop_back();
+        return rotate_right();
+    }
     else
-        return rotate_left(g);
+    {
+        stack.pop_back();
+        stack.pop_back();
+        return rotate_left();
+    }
 }
 
 template<typename T>
-auto tree<T>::helper::delete_case1(const pnode& t) -> pnode
+auto tree<T>::helper::delete_case1() -> pnode
 {
-    if (parent(t) != nil)
-        return delete_case2(t);
+    pnode t = stack.back();
+    if (parent() != nil)
+        return delete_case2();
     t->color = node::Color::BLACK;
     return t;
 }
 
 template<typename T>
-auto tree<T>::helper::delete_case2(const pnode& t) -> pnode
+auto tree<T>::helper::delete_case2() -> pnode
 {
     typedef typename tree<T>::node::Color Color;
-    auto s = brother(t);
+    auto s = brother();
+    auto p = parent();
     if (color(s) == Color::RED)
     {
-        parent(t)->color = Color::RED;
+        p->color = Color::RED;
         s->color = Color::BLACK;
-        if (t == left(parent(t)))
-            rotate_left(parent(t));
+        if (is_left_son())
+        {
+            // вот ну что это за хрень?
+            stack.pop_back();
+            rotate_left();
+            stack.push_back(left(stack.back()));
+            stack.push_back(left(stack.back()));
+        }
         else
-            rotate_right(parent(t));
+        {
+            stack.pop_back();
+            rotate_right();
+            stack.push_back(right(stack.back()));
+            stack.push_back(right(stack.back()));
+        }
     }
-    return delete_case3(t);
+    return delete_case3();
 }
 
 template<typename T>
-auto tree<T>::helper::delete_case3(const pnode& t) -> pnode
+auto tree<T>::helper::delete_case3() -> pnode
 {
     typedef typename tree<T>::node::Color Color;
     const auto BLACK = Color::BLACK;
-    auto s = brother(t);
-    if (color(parent(t)) == BLACK && color(s) == BLACK && color(left(s)) == BLACK && color(right(s)) == BLACK)
+    auto s = brother();
+    auto p = parent();
+    if (color(p) == BLACK && color(s) == BLACK && color(left(s)) == BLACK && color(right(s)) == BLACK)
     {
         s->color = Color::RED;
-        return delete_case1(parent(t));
+        stack.pop_back();
+        return delete_case1();
     }
     else
-        return delete_case4(t);
+        return delete_case4();
 }
 
 template<typename T>
-auto tree<T>::helper::delete_case4(const pnode& t) -> pnode
+auto tree<T>::helper::delete_case4() -> pnode
 {
     typedef typename tree<T>::node::Color Color;
-    auto s = brother(t);
-    if (color(parent(t)) == Color::RED &&
+    auto s = brother();
+    auto p = parent();
+    if (color(p) == Color::RED &&
             color(s) == Color::BLACK &&
     color(left(s)) == Color::BLACK &&
             color(right(s)) == Color::BLACK)
     {
         s->color = Color::RED;
-        parent(t)->color = Color::BLACK;
-        return t;
+        p->color = Color::BLACK;
+        return stack.back();
     }
     else
-        return delete_case5(t);
+        return delete_case5();
 }
 
 template<typename T>
-auto tree<T>::helper::delete_case5(const pnode& t) -> pnode
+auto tree<T>::helper::delete_case5() -> pnode
 {
     typedef typename tree<T>::node::Color Color;
-    auto s = brother(t);
+    auto s = brother();
+//    auto p = parent();
     if (color(s) == Color::BLACK)
     {
-        if (t == left(parent(t)) &&
+        if (is_left_son() &&
                 color(right(s)) == Color::BLACK &&
         color(left(s)) == Color::RED)
         {
             s->color = Color::RED;
             left(s)->color = Color::BLACK;
-            rotate_right(s);
+            stack.pop_back();
+            stack.push_back(right(stack.back()));
+            rotate_right();
+            stack.pop_back();
+            stack.push_back(left(stack.back()));
         }
-        else if (t == right(parent(t)) &&
+        else if (is_right_son() &&
         color(left(s)) == Color::BLACK &&
                  color(right(s)) == Color::RED)
         {
             s->color = Color::RED;
             right(s)->color = Color::BLACK;
-            rotate_left(s);
+            stack.pop_back();
+            stack.push_back(left(stack.back()));
+            rotate_left();
+            stack.pop_back();
+            stack.push_back(right(stack.back()));
         }
     }
-    return delete_case6(t);
+    return delete_case6();
 }
 
 template<typename T>
-auto tree<T>::helper::delete_case6(const pnode& t) -> pnode
+auto tree<T>::helper::delete_case6() -> pnode
 {
     typedef typename tree<T>::node::Color Color;
-    auto s = brother(t);
-    s->color = parent(t)->color;
-    t->parent->color = Color::BLACK;
-    if (t == left(parent(t)))
+    auto s = brother();
+    auto p = parent();
+    s->color = p->color;
+    p->color = Color::BLACK;
+    if (is_left_son())
     {
         right(s)->color = Color::BLACK;
-        return rotate_left(parent(t));
+        stack.pop_back();
+        return rotate_left();
     }
     else
     {
         left(s)->color = Color::BLACK;
-        return rotate_right(parent(t));
+        stack.pop_back();
+        return rotate_right();
     }
 }
 
 template<typename T>
-auto tree<T>::helper::insert(pnode t, const_reference val, pnode& parent) -> pnode
+auto tree<T>::helper::insert(pnode t, const_reference val) -> pnode
 {
     if (t == nil)
     {
         typedef typename tree<T>::node node;
-        t = pnode(new node(val, node::Color::RED, nil, nil, parent));
-        fixit_insert = t;
+        t = pnode(new node(val, node::Color::RED, nil, nil));
+        pnode p = stack.empty() ? nil : stack.back();
+        if (p == nil)
+        {
+            stack.push_back(t);
+            return t;
+        }
+        if (val < p->val)
+            replace_stack_top_with(set_left(p, t));
+        else
+            replace_stack_top_with(set_right(p, t));
+        stack.push_back(t);
         return t;
     }
+    stack.push_back(t);
     if (val < t->val)
     {
-        // Очень плохой код. Ничего не понятно. Простите меня
-        pnode tmp = insert(left(t), val, t);
-        pnode tmp2 = set_parent(tmp, t);
-        t = set_left(t, tmp2);
+        insert(left(t), val);
         return t;
     }
     else
     {
-        pnode tmp = insert(right(t), val, t);
-        pnode tmp2 = set_parent(tmp, t);
-        t = set_right(t, tmp2);
+        insert(right(t), val);
         return t;
     }
 }
 
-
+// в стеке уже лежит то, что хотим удалить
 template<typename T>
 auto tree<T>::helper::erase(pnode t) -> pnode
 {
@@ -311,31 +372,47 @@ auto tree<T>::helper::erase(pnode t) -> pnode
     else
     {
         y = right(t);
+        stack.push_back(y);
         while (left(y) != nil)
+        {
             y = left(y);
+            stack.push_back(y);
+        }
     }
     pnode x;
     if (left(y) != nil)
         x = left(y);
     else
         x = right(y);
-    x = set_parent(x, parent(y));
-    if (parent(y) == nil)
+
+    auto p(parent());
+
+    if (p == nil) // так ли?
     {
+        stack.pop_back();
+        stack.push_back(x);
         need_delete_fixup = true;
-        fixit_delete = x;
         return x;
     }
-    else if (y == left(parent(y)))
-        y = set_parent(y, set_left(parent(y), x));
+
+    if (is_left_son())
+    {
+        stack.pop_back();
+        replace_stack_top_with(set_left(p, x));
+    }
     else
-        y = set_parent(y, set_right(parent(y), x));
+    {
+        stack.pop_back();
+        replace_stack_top_with(set_right(p, x));
+    }
+    stack.push_back(x);
+//    x = set_parent(x, parent(y));
+//    if (parent(y) == nil)
     if (y != t)
         t->val = y->val;
     if (y->color == Color::BLACK)
     {
         need_delete_fixup = true;
-        fixit_delete = x;
     }
     return y;
 }
@@ -345,8 +422,33 @@ auto tree<T>::helper::erase(pnode t, const_reference val) -> pnode
 {
     if (t == nil)
         return t;
+    stack.push_back(t);
     if (t->val == val)
-        return erase(t);
+    {
+        if (stack.size() == 1)
+        {
+            pnode new_t(new node(t->val, t->color, left(t), right(t)));
+            replace_stack_top_with(new_t);
+            return erase(new_t);
+        }
+        pnode p(parent());
+        if (is_left_son())
+        {
+            stack.pop_back();
+            pnode new_t(new node(t->val, t->color, left(t), right(t)));
+            replace_stack_top_with(set_left(p, new_t));
+            stack.push_back(new_t);
+            return erase(new_t);
+        }
+        else
+        {
+            stack.pop_back();
+            pnode new_t(new node(t->val, t->color, left(t), right(t)));
+            replace_stack_top_with(set_right(p, new_t));
+            stack.push_back(new_t);
+            return erase(new_t);
+        }
+    }
     else if (val < t->val)
         return erase(left(t), val);
     else
@@ -377,17 +479,14 @@ size_t tree<T>::helper::depth(const pnode& t) const
 template<typename T>
 void tree<T>::helper::insert(const_reference val)
 {
-// Accept similar elements
+// Accept similar elements?
 //    if (count(val) != 0)
 //        return;
-    root = insert(root, val, nil);
-    if (fixit_insert != nil)
-    {
-        root = insert_case1(fixit_insert);
-        fixit_insert = nil;
-    }
-    while (parent(root) != nil)
-        root = parent(root);
+    size_++;
+    insert(root, val);
+    insert_case1();
+    root = stack[0];
+    stack.clear();
 }
 
 template<typename T>
@@ -395,14 +494,15 @@ void tree<T>::helper::erase(const_reference val)
 {
     if (count(val) == 0)
         return;
-    root = erase(root, val);
+    size_--;
+    erase(root, val);
     if (need_delete_fixup)
     {
-        delete_case1(fixit_delete);
+        delete_case1();
         need_delete_fixup = false;
     }
-    while (parent(root) != nil)
-        root = parent(root);
+    root = stack[0];
+    stack.clear();
 }
 
 template<typename T>
@@ -455,26 +555,38 @@ void tree<T>::helper::check_black_depth(const pnode& t, size_t depth_need, size_
 template<typename T>
 auto tree<T>::helper::begin() -> iterator
 {
-    return begin(revision);
+    return begin(revision(revision_, size_, root));
 }
 
 template<typename T>
-auto tree<T>::helper::begin(size_t revision) -> iterator
+auto tree<T>::helper::begin(size_t rev) -> iterator
 {
-    pnode first = root;
+    return begin(revisions[rev]);
+}
+
+template<typename T>
+auto tree<T>::helper::begin(const revision& r) -> iterator
+{
+    pnode first = r.root;
+    size_t revision = r.revision_;
     if (first == nil)
         return end();
-    while (left(first) != nil)
+    assert (stack.size() == 0);
+    stack.push_back(first);
+    while (left(first, revision) != nil)
     {
-        first = left(first);
+        first = left(first, revision);
+        stack.push_back(first);
     }
-    return iterator(t, first, revision);
+    iterator it(t, first, revision, stack);
+    stack.clear();
+    return it;
 }
 
 template<typename T>
 auto tree<T>::helper::end() -> iterator
 {
-    return iterator(t, nil, 0);
+    return iterator(t, nil, 0, std::vector<pnode>(0));
 }
 
 template<typename T>
@@ -488,7 +600,7 @@ auto tree<T>::helper::left(const pnode& t, size_t revision) const -> pnode
 template<typename T>
 auto tree<T>::helper::left(const pnode& t) const -> pnode
 {
-    return left(t, revision);
+    return left(t, revision_);
 }
 
 template<typename T>
@@ -502,21 +614,7 @@ auto tree<T>::helper::right(const pnode& t, size_t revision) const -> pnode
 template<typename T>
 auto tree<T>::helper::right(const pnode& t) const -> pnode
 {
-    return right(t, revision);
-}
-
-template<typename T>
-auto tree<T>::helper::parent(const pnode& t, size_t revision) const -> pnode
-{
-    if (t->patch != nullptr && t->patch->what == patch::What::PARENT && t->patch->revision < revision)
-        return t->patch->new_;
-    return t->parent;
-}
-
-template<typename T>
-auto tree<T>::helper::parent(const pnode& t) const -> pnode
-{
-    return parent(t, revision);
+    return right(t, revision_);
 }
 
 template<typename T>
@@ -526,16 +624,16 @@ auto tree<T>::helper::set_left(const pnode& t, const pnode& left_) -> pnode
         return t;
     if (t->patch == nullptr)
     {
-        t->patch = ppatch(new patch(patch::What::LEFT, left_, revision++));
+        t->patch = ppatch(new patch(patch::What::LEFT, left_, revision_++));
         return t;
     }
     else
     {
-        revision++;
-        return t->apply();
+        revision_++;
+        pnode res = t->apply();
+        res->left_ = left_;
+        return res;
     }
-    t->left_ = left_;
-    return t;
 }
 
 template<typename T>
@@ -545,35 +643,45 @@ auto tree<T>::helper::set_right(const pnode& t, const pnode& right_) -> pnode
         return t;
     if (t->patch == nullptr)
     {
-        t->patch = ppatch(new patch(patch::What::RIGHT, right_, revision++));
+        t->patch = ppatch(new patch(patch::What::RIGHT, right_, revision_++));
         return t;
     }
     else
     {
-        revision++;
-        return t->apply();
+        revision_++;
+        pnode res = t->apply();
+        res->right_ = right_;
+        return res;
     }
 }
 
-template<typename T>
-auto tree<T>::helper::set_parent(const pnode& t, const pnode& parent_) -> pnode
-{
-    if (parent(t) == parent_)
-        return t;
-    if (t->patch == nullptr)
-    {
-        t->patch = ppatch(new patch(patch::What::PARENT, parent_, revision++));
-        return t;
-    }
-    else
-    {
-        revision++;
-        return t->apply();
-    }
-}
 
 template<typename T>
 void tree<T>::helper::tag_it(size_t rev)
 {
-    roots[rev] = make_pair(revision, root);
+    revisions[rev] = revision(revision_, size_, root);
+}
+
+template<typename T>
+void tree<T>::helper::replace_stack_top_with(const pnode& t)
+{
+    if (stack.back() == t)
+        return;
+    if (stack.size() == 1)
+    {
+        stack[0] = t;
+        return;
+    }
+    if (is_left_son())
+    {
+        stack.pop_back();
+        replace_stack_top_with(set_left(stack.back(), t));
+        stack.push_back(t);
+    }
+    else
+    {
+        stack.pop_back();
+        replace_stack_top_with(set_right(stack.back(), t));
+        stack.push_back(t);
+    }
 }

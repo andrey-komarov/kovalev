@@ -6,7 +6,7 @@ struct tree<T>::patch
 {
     enum class What
     {
-        LEFT, RIGHT, PARENT
+        LEFT, RIGHT
     };
 
     typedef typename tree<T>::pnode pnode;
