@@ -559,19 +559,19 @@ void tree<T>::helper::check_black_depth(const pnode& t, size_t depth_need, size_
 }
 
 template<typename T>
-auto tree<T>::helper::begin() -> iterator
+auto tree<T>::helper::begin() const -> iterator
 {
     return begin(revision(revision_, size_, root));
 }
 
 template<typename T>
-auto tree<T>::helper::begin(size_t rev) -> iterator
+auto tree<T>::helper::begin(size_t rev) const -> iterator
 {
-    return begin(revisions[rev]);
+    return begin(revisions.find(rev)->second);
 }
 
 template<typename T>
-auto tree<T>::helper::begin(const revision& r) -> iterator
+auto tree<T>::helper::begin(const revision& r) const -> iterator
 {
     pnode first = r.root;
     size_t revision = r.revision_;
@@ -584,15 +584,52 @@ auto tree<T>::helper::begin(const revision& r) -> iterator
         first = left(first, revision);
         stack.push_back(first);
     }
-    iterator it(t, first, revision, stack);
+    iterator it(t, revision, stack);
     stack.clear();
     return it;
 }
 
 template<typename T>
-auto tree<T>::helper::end() -> iterator
+auto tree<T>::helper::end() const -> iterator
 {
-    return iterator(t, nil, 0, std::vector<pnode>(0));
+    return iterator(t, 0, std::vector<pnode>(0));
+}
+
+template<typename T>
+auto tree<T>::helper::lower_bound(const_reference val) const -> iterator
+{
+    return lower_bound(root, val, revision_);
+}
+
+template<typename T>
+auto tree<T>::helper::lower_bound(const_reference val, size_t rev) const -> iterator
+{
+    const revision& r = revisions.find(rev)->second; // ну почему [] создают собственный элемент и не-const?...
+    return lower_bound(r.root, val, r.revision_);
+}
+
+template<typename T>
+auto tree<T>::helper::lower_bound(const pnode& root, const_reference val, size_t revision) const -> iterator
+{
+    assert(stack.empty());
+    lower_bound_(root, val, revision);
+    iterator it(t, revision, stack);
+    stack.clear();
+    return it;
+}
+
+template<typename T>
+void tree<T>::helper::lower_bound_(const pnode& root, const_reference val, size_t revision) const
+{
+    if (root == nil)
+        return;
+//    size_t stack_size = stack.size();
+    stack.push_back(root);
+    if (root->val < val)
+        lower_bound_(right(root), val, revision);
+    lower_bound_(left(root), val, revision);
+    while (stack.back()->val < val)
+        stack.pop_back();
 }
 
 template<typename T>

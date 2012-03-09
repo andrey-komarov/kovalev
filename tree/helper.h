@@ -22,9 +22,12 @@ public:
     size_t count(const_reference) const;
     size_t count(const_reference, size_t rev) const;
 
-    iterator begin();
-    iterator begin(size_t rev);
-    iterator end();
+    iterator lower_bound(const_reference) const;
+    iterator lower_bound(const_reference, size_t revision) const;
+
+    iterator begin() const;
+    iterator begin(size_t rev) const;
+    iterator end() const;
 
     void tag_it(size_t rev);
 
@@ -39,7 +42,9 @@ private:
     pnode right(const pnode&, size_t revision) const;
     void replace_stack_top_with(const pnode&);
 
-    iterator begin(const revision&);
+    iterator begin(const revision&) const;
+    iterator lower_bound(const pnode&, const_reference val, size_t revision) const;
+    void lower_bound_(const pnode&, const_reference val, size_t revision) const;
 
     pnode insert_case1();
     pnode insert_case2();
@@ -74,7 +79,7 @@ private:
     tree<T>* t;
     std::map<size_t, revision> revisions;
     bool need_delete_fixup;
-    std::vector<pnode> stack;
+    mutable std::vector<pnode> stack;
 
     friend class tree<T>;
 };

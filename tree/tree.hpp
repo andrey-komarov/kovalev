@@ -42,6 +42,18 @@ size_t tree<T>::count(const_reference elem, size_t rev) const
 }
 
 template<typename T>
+auto tree<T>::lower_bound(const_reference elem) const -> iterator
+{
+    return h.lower_bound(elem);
+}
+
+template<typename T>
+auto tree<T>::lower_bound(const_reference elem, size_t revision) const -> iterator
+{
+    return h.lower_bound(elem, revision);
+}
+
+template<typename T>
 void tree<T>::check_rb_properties() const
 {
     h.check_rb_properties();

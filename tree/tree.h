@@ -46,6 +46,9 @@ public:
     size_t count(const_reference elem) const;
     size_t count(const_reference elem, size_t revision) const;
 
+    iterator lower_bound(const_reference elem) const;
+    iterator lower_bound(const_reference elem, size_t revision) const;
+
     void tag_it(size_t rev);
 
     void check_rb_properties() const;

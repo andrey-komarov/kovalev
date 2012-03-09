@@ -28,4 +28,14 @@ int main()
             cerr << t.count(j, i);
         cerr << "\n";
     }
+
+    t = tree<int>();
+    t.insert(1);
+    t.insert(5);
+    t.insert(8);
+
+    for (int i = 0; i < 10; i++)
+        cerr << i << " -> " << *(t.lower_bound(i)) << "\n";
+    cerr << "\n";
+
 }

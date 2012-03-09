@@ -1,6 +1,6 @@
 template<typename T>
-tree<T>::iterator::iterator(tree<T>* t, const pnode& n, size_t rev, const std::vector<pnode>& stack) :
-t(t), n(n), revision(rev), stack(stack)
+tree<T>::iterator::iterator(tree<T>* t, size_t rev, const std::vector<pnode>& stack) :
+t(t), revision(rev), stack(stack), n(stack.empty() ? nullptr : stack.back())
 {}
 
 template<typename T>

@@ -15,16 +15,12 @@ tree<T>::node::node(const_reference val, Color color, pnode nil) :
     left_(nil), right_(nil),
     color(color),
 patch(nullptr)
-{
-    NODES++;
-}
+{}
 
 template<typename T>
 tree<T>::node::node(const_reference val, Color color, pnode left, pnode right) :
 val(val), left_(left), right_(right), color(color), patch(nullptr)
-{
-    NODES++;
-}
+{}
 
 template<typename T>
 auto tree<T>::node::apply() const -> pnode
