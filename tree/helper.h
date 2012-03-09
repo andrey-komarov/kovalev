@@ -45,31 +45,31 @@ private:
     iterator lower_bound(const pnode&, const_reference val, size_t revision) const;
     void lower_bound_(const pnode&, const_reference val, size_t revision) const;
 
-    pnode insert_case1();
-    pnode insert_case2();
-    pnode insert_case3();
-    pnode insert_case4();
-    pnode insert_case5();
-    pnode rotate_left();
-    pnode rotate_right();
+    void insert_case1();
+    void insert_case2();
+    void insert_case3();
+    void insert_case4();
+    void insert_case5();
+    void rotate_left();
+    void rotate_right();
     pnode grandparent() const;
     pnode parent() const;
     pnode uncle() const;
     pnode brother() const;
     bool is_left_son() const;
     bool is_right_son() const;
-    pnode delete_case1();
-    pnode delete_case2();
-    pnode delete_case3();
-    pnode delete_case4();
-    pnode delete_case5();
-    pnode delete_case6();
+    void delete_case1();
+    void delete_case2();
+    void delete_case3();
+    void delete_case4();
+    void delete_case5();
+    void delete_case6();
     typename node::Color color(const pnode&) const;
 
     size_t depth(const pnode&) const;
-    pnode insert(pnode, const_reference);
-    pnode erase(pnode, const_reference);
-    pnode erase(pnode);
+    void insert(pnode, const_reference);
+    void erase(pnode, const_reference);
+    void erase(pnode);
     size_t count(const pnode&, const_reference, size_t rev) const;
     void check_black_depth(const pnode& t, size_t depth_need, size_t depth = 0) const;
 
