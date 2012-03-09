@@ -28,7 +28,7 @@ auto tree<T>::iterator::operator*() -> const_reference
 template<typename T>
 bool tree<T>::iterator::operator==(const iterator& it) const
 {
-    return (revision == it.revision || n == t->h.nil) && t == it.t && n == it.n;
+    return (revision == it.revision || n == nullptr) && t == it.t && n == it.n;
 }
 
 template<typename T>
@@ -48,12 +48,11 @@ auto tree<T>::iterator::parent() const -> pnode
 template<typename T>
 auto tree<T>::iterator::operator++() -> iterator&
 {
-    pnode& nil = t->h.nil;
-    if (t->h.right(n, revision) != nil)
+    if (t->h.right(n, revision) != nullptr)
     {
         n = t->h.right(n, revision);
         stack.push_back(n);
-        while (t->h.left(n, revision) != nil)
+        while (t->h.left(n, revision) != nullptr)
         {
             n = t->h.left(n, revision);
             stack.push_back(n);

@@ -10,7 +10,6 @@ struct tree<T>::helper
 {
     helper(tree<T>*);
 private:
-    pnode nil;
     pnode root;
 public:
     void insert(const_reference);

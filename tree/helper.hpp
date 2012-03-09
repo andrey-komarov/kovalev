@@ -2,8 +2,7 @@
 
 template<typename T>
 tree<T>::helper::helper(tree<T>* t) :
-    nil(new node()),
-    root(nil),
+    root(nullptr),
     revision_(0),
 size_(0),
 t(t),
@@ -50,7 +49,7 @@ template<typename T>
 auto tree<T>::helper::grandparent() const -> pnode
 {
     if (stack.size() <= 2)
-        return nil;
+        return nullptr;
     else
         return stack[stack.size() - 3];
 }
@@ -59,7 +58,7 @@ template<typename T>
 auto tree<T>::helper::parent() const -> pnode
 {
     if (stack.size() <= 1)
-        return nil;
+        return nullptr;
     return stack[stack.size() - 2];
 }
 
@@ -67,8 +66,8 @@ template<typename T>
 auto tree<T>::helper::uncle() const -> pnode
 {
     auto g = grandparent();
-    if (g == nil)
-        return nil;
+    if (g == nullptr)
+        return nullptr;
     if (parent() == left(g))
         return right(g);
     else
@@ -87,6 +86,8 @@ auto tree<T>::helper::brother() const -> pnode
 template<typename T>
 auto tree<T>::helper::color(const pnode& t) const -> typename node::Color
 {
+    if (t == nullptr)
+        return node::Color::BLACK;
     return t->color;
 }
 
@@ -108,7 +109,7 @@ template<typename T>
 auto tree<T>::helper::insert_case1() -> pnode
 {
     pnode n = stack.back();
-    if (parent() == nil)
+    if (parent() == nullptr)
     {
         n->color = tree<T>::node::Color::BLACK;
         return stack.back();
@@ -132,7 +133,7 @@ auto tree<T>::helper::insert_case3() -> pnode
 {
     typedef typename tree<T>::node::Color Color;
     auto u(uncle());
-    if (u != nil && u->color == Color::RED)
+    if (u != nullptr && u->color == Color::RED)
     {
         parent()->color = Color::BLACK;
         u->color = Color::BLACK;
@@ -198,7 +199,7 @@ template<typename T>
 auto tree<T>::helper::delete_case1() -> pnode
 {
     pnode t = stack.back();
-    if (parent() != nil)
+    if (parent() != nullptr)
         return delete_case2();
     t->color = node::Color::BLACK;
     return t;
@@ -330,12 +331,12 @@ auto tree<T>::helper::delete_case6() -> pnode
 template<typename T>
 auto tree<T>::helper::insert(pnode t, const_reference val) -> pnode
 {
-    if (t == nil)
+    if (t == nullptr)
     {
         typedef typename tree<T>::node node;
-        t = pnode(new node(val, node::Color::RED, nil, nil));
-        pnode p = stack.empty() ? nil : stack.back();
-        if (p == nil)
+        t = pnode(new node(val, node::Color::RED, nullptr, nullptr));
+        pnode p = stack.empty() ? nullptr : stack.back();
+        if (p == nullptr)
         {
             stack.push_back(t);
             return t;
@@ -367,27 +368,27 @@ auto tree<T>::helper::erase(pnode t) -> pnode
     typedef typename tree<T>::pnode pnode;
     typedef typename tree<T>::node::Color Color;
     pnode y; // то, что хотим удалять. у него ноль-один сын
-    if (left(t) == nil || right(t) == nil)
+    if (left(t) == nullptr || right(t) == nullptr)
         y = t;
     else
     {
         y = right(t);
         stack.push_back(y);
-        while (left(y) != nil)
+        while (left(y) != nullptr)
         {
             y = left(y);
             stack.push_back(y);
         }
     }
     pnode x;
-    if (left(y) != nil)
+    if (left(y) != nullptr)
         x = left(y);
     else
         x = right(y);
 
     auto p(parent());
 
-    if (p == nil) // так ли?
+    if (p == nullptr) // так ли?
     {
         stack.pop_back();
         stack.push_back(x);
@@ -407,7 +408,7 @@ auto tree<T>::helper::erase(pnode t) -> pnode
     }
     stack.push_back(x);
 //    x = set_parent(x, parent(y));
-//    if (parent(y) == nil)
+//    if (parent(y) == nullptr)
     if (y != t)
         t->val = y->val;
     if (y->color == Color::BLACK)
@@ -420,7 +421,7 @@ auto tree<T>::helper::erase(pnode t) -> pnode
 template<typename T>
 auto tree<T>::helper::erase(pnode t, const_reference val) -> pnode
 {
-    if (t == nil)
+    if (t == nullptr)
         return t;
     stack.push_back(t);
     if (t->val == val)
@@ -458,7 +459,7 @@ auto tree<T>::helper::erase(pnode t, const_reference val) -> pnode
 template<typename T>
 size_t tree<T>::helper::count(const pnode& t, const_reference val, size_t rev) const
 {
-    if (t == nil)
+    if (t == nullptr)
         return 0;
     if (t->val == val)
         return 1;
@@ -471,7 +472,7 @@ size_t tree<T>::helper::count(const pnode& t, const_reference val, size_t rev) c
 template<typename T>
 size_t tree<T>::helper::depth(const pnode& t) const
 {
-    if (t == nil)
+    if (t == nullptr)
         return 0;
     return std::max(depth(left(t)), depth(right(t))) + 1;
 }
@@ -530,7 +531,7 @@ void tree<T>::helper::check_rb_properties() const
     assert (root->color == Color::BLACK);
     pnode now = root;
     size_t black_depth(0);
-    while (now != nil)
+    while (now != nullptr)
     {
         black_depth += now->color == Color::BLACK ? 1 : 0;
         now = left(now);
@@ -541,7 +542,7 @@ void tree<T>::helper::check_rb_properties() const
 template<typename T>
 void tree<T>::helper::check_black_depth(const pnode& t, size_t depth_need, size_t depth) const
 {
-    if (t == nil)
+    if (t == nullptr)
     {
         assert (depth_need == depth);
         return;
@@ -575,11 +576,11 @@ auto tree<T>::helper::begin(const revision& r) const -> iterator
 {
     pnode first = r.root;
     size_t revision = r.revision_;
-    if (first == nil)
+    if (first == nullptr)
         return end();
     assert (stack.size() == 0);
     stack.push_back(first);
-    while (left(first, revision) != nil)
+    while (left(first, revision) != nullptr)
     {
         first = left(first, revision);
         stack.push_back(first);
@@ -621,14 +622,14 @@ auto tree<T>::helper::lower_bound(const pnode& root, const_reference val, size_t
 template<typename T>
 void tree<T>::helper::lower_bound_(const pnode& root, const_reference val, size_t revision) const
 {
-    if (root == nil)
+    if (root == nullptr)
         return;
 //    size_t stack_size = stack.size();
     stack.push_back(root);
     if (root->val < val)
         lower_bound_(right(root), val, revision);
     lower_bound_(left(root), val, revision);
-    while (stack.back()->val < val)
+    while (!stack.empty() && stack.back()->val < val)
         stack.pop_back();
 }
 

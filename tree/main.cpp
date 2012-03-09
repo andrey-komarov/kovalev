@@ -35,7 +35,8 @@ int main()
     t.insert(8);
 
     for (int i = 0; i < 10; i++)
-        cerr << i << " -> " << *(t.lower_bound(i)) << "\n";
+        cerr << (t.lower_bound(i) == t.end());
+        //        cerr << i << " -> " << *(t.lower_bound(i)) << "\n";
     cerr << "\n";
 
 }
