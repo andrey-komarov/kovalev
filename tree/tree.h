@@ -39,7 +39,12 @@ public:
     tree();
     void insert(const_reference elem);
     void erase(const_reference elem);
+
+    size_t size() const;
+    size_t size(size_t rev) const;
+
     size_t count(const_reference elem) const;
+    size_t count(const_reference elem, size_t revision) const;
 
     void tag_it(size_t rev);
 
@@ -48,6 +53,7 @@ public:
     iterator begin();
     iterator end();
     iterator begin(size_t);
+
 
     size_t depth() const;
 

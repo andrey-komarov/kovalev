@@ -20,8 +20,12 @@ int main()
     }
     for (int i = 0; i < n; i++)
     {
+        cerr << t.size(i) << " :: ";
         for (auto it = t.begin(i); it != t.end(); it++)
             cerr << *it;
+        cerr << "\t\t\t";
+        for (auto j : t)
+            cerr << t.count(j, i);
         cerr << "\n";
     }
 }

@@ -15,7 +15,13 @@ private:
 public:
     void insert(const_reference);
     void erase(const_reference);
+
+    size_t size() const;
+    size_t size(size_t rev) const;
+
     size_t count(const_reference) const;
+    size_t count(const_reference, size_t rev) const;
+
     iterator begin();
     iterator begin(size_t rev);
     iterator end();
@@ -60,7 +66,7 @@ private:
     pnode insert(pnode, const_reference);
     pnode erase(pnode, const_reference);
     pnode erase(pnode);
-    size_t count(const pnode&, const_reference) const;
+    size_t count(const pnode&, const_reference, size_t rev) const;
     void check_black_depth(const pnode& t, size_t depth_need, size_t depth = 0) const;
 
     size_t revision_;

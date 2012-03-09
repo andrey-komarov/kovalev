@@ -18,9 +18,27 @@ void tree<T>::erase(const_reference elem)
 }
 
 template<typename T>
+size_t tree<T>::size() const
+{
+    return h.size();
+}
+
+template<typename T>
+size_t tree<T>::size(size_t rev) const
+{
+    return h.size(rev);
+}
+
+template<typename T>
 size_t tree<T>::count(const_reference elem) const
 {
     return h.count(elem);
+}
+
+template<typename T>
+size_t tree<T>::count(const_reference elem, size_t rev) const
+{
+    return h.count(elem, rev);
 }
 
 template<typename T>

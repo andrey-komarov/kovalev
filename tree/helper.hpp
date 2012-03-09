@@ -456,16 +456,16 @@ auto tree<T>::helper::erase(pnode t, const_reference val) -> pnode
 }
 
 template<typename T>
-size_t tree<T>::helper::count(const pnode& t, const_reference val) const
+size_t tree<T>::helper::count(const pnode& t, const_reference val, size_t rev) const
 {
     if (t == nil)
         return 0;
     if (t->val == val)
         return 1;
     else if (val < t->val)
-        return count(left(t), val);
+        return count(left(t, rev), val, rev);
     else
-        return count(right(t), val);
+        return count(right(t, rev), val, rev);
 }
 
 template<typename T>
@@ -508,7 +508,13 @@ void tree<T>::helper::erase(const_reference val)
 template<typename T>
 size_t tree<T>::helper::count(const_reference val) const
 {
-    return count(root, val);
+    return count(root, val, revision_);
+}
+
+template<typename T>
+size_t tree<T>::helper::count(const_reference val, size_t rev) const
+{
+    return count(revisions.find(rev)->second.root, val, rev);
 }
 
 template<typename T>
@@ -684,4 +690,16 @@ void tree<T>::helper::replace_stack_top_with(const pnode& t)
         replace_stack_top_with(set_right(stack.back(), t));
         stack.push_back(t);
     }
+}
+
+template<typename T>
+size_t tree<T>::helper::size() const
+{
+    return size_;
+}
+
+template<typename T>
+size_t tree<T>::helper::size(size_t rev) const
+{
+    return revisions.find(rev)->second.size_;
 }
