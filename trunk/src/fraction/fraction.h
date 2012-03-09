@@ -1,7 +1,7 @@
 #ifndef FRACTION_H
 #define FRACTION_H
 
-#include "big_int.h"
+#include "big_int/big_int.h"
 #include <vector>
 #include <ostream>
 

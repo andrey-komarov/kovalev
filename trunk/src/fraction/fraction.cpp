@@ -1,4 +1,4 @@
-#include "fraction.h"
+#include "fraction/fraction.h"
 fraction::fraction() : p(0), q(1) {}
 
 fraction::fraction(int p) : p(p), q(1) {}
