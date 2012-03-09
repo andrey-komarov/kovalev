@@ -1,0 +1,5 @@
+x:\evaluator\export\problem4.2\merge.h(27): warning C4346: 'L2::Head' : dependent name is not a type [X:\evaluator\export\problem4.2\problem4.2.vcxproj]
+x:\evaluator\export\problem4.2\merge.h(27): warning C4346: 'L1::Head<LIST<L1::Head,MERGE<L1::Tail,L2>::type>,LIST<L2::Head,MERGE<L1,L2::Tail>::type>>::type' : dependent name is not a type [X:\evaluator\export\problem4.2\problem4.2.vcxproj]
+
+[Generated at June 20, 2011 3:35:31 PM GMT+03:00]
+

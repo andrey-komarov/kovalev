@@ -1,0 +1,4 @@
+Running 5 test cases...
+big_int_test.cpp(388): error in "io_test": check iss1.fail() == iss2.fail() failed [false != true]
+unknown location(0): fatal error in "io_test": std::bad_alloc: bad allocation
+big_int_test.cpp(388): last checkpoint

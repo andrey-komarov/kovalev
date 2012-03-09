@@ -1,0 +1,71 @@
+K 25
+svn:wc:ra_dav:version-url
+V 38
+/svn/!svn/ver/126/trunk/old/problem2.1
+END
+failed-test.txt
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/126/trunk/old/problem2.1/failed-test.txt
+END
+big_int.h
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/126/trunk/old/problem2.1/big_int.h
+END
+container.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/126/trunk/old/problem2.1/container.cpp
+END
+last-message.txt
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/126/trunk/old/problem2.1/last-message.txt
+END
+compilation-errors.txt
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/126/trunk/old/problem2.1/compilation-errors.txt
+END
+container.h
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/126/trunk/old/problem2.1/container.h
+END
+big_int_test.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/126/trunk/old/problem2.1/big_int_test.cpp
+END
+problem2.1.vcxproj
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/126/trunk/old/problem2.1/problem2.1.vcxproj
+END
+big_int.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/126/trunk/old/problem2.1/big_int.cpp
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/126/trunk/old/problem2.1/Makefile
+END
+build.xml
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/126/trunk/old/problem2.1/build.xml
+END

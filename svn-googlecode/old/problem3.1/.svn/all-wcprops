@@ -1,0 +1,113 @@
+K 25
+svn:wc:ra_dav:version-url
+V 38
+/svn/!svn/ver/126/trunk/old/problem3.1
+END
+calculator.h
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/126/trunk/old/problem3.1/calculator.h
+END
+utils.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/126/trunk/old/problem3.1/utils.cpp
+END
+compilation-warnings.txt
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/126/trunk/old/problem3.1/compilation-warnings.txt
+END
+utils.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/126/trunk/old/problem3.1/utils.hpp
+END
+functions.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/126/trunk/old/problem3.1/functions.cpp
+END
+big_int.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/126/trunk/old/problem3.1/big_int.cpp
+END
+big_int.h
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/126/trunk/old/problem3.1/big_int.h
+END
+utils.tpp
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/126/trunk/old/problem3.1/utils.tpp
+END
+container.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/126/trunk/old/problem3.1/container.cpp
+END
+last-message.txt
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/126/trunk/old/problem3.1/last-message.txt
+END
+main.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/126/trunk/old/problem3.1/main.cpp
+END
+compilation-errors.txt
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/126/trunk/old/problem3.1/compilation-errors.txt
+END
+function.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/126/trunk/old/problem3.1/function.cpp
+END
+container.h
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/126/trunk/old/problem3.1/container.h
+END
+calculator.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/126/trunk/old/problem3.1/calculator.cpp
+END
+function.h
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/126/trunk/old/problem3.1/function.h
+END
+problem3.1.vcxproj
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/126/trunk/old/problem3.1/problem3.1.vcxproj
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/126/trunk/old/problem3.1/Makefile
+END

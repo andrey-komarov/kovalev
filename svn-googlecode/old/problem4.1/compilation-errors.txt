@@ -1,0 +1,5 @@
+x:\evaluator\export\problem4.1\divide.h(17): fatal error C1060: compiler is out of heap space [X:\evaluator\export\problem4.1\problem4.1.vcxproj]
+c1xx : fatal error C1063: INTERNAL COMPILER ERROR [X:\evaluator\export\problem4.1\problem4.1.vcxproj]
+
+[Generated at May 28, 2011 3:44:19 PM GMT+03:00]
+

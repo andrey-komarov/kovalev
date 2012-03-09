@@ -1,0 +1,101 @@
+K 25
+svn:wc:ra_dav:version-url
+V 39
+/svn/!svn/ver/136/trunk/cg2011/p1.1/src
+END
+point.h
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/129/trunk/cg2011/p1.1/src/point.h
+END
+double_utils.h
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/128/trunk/cg2011/p1.1/src/double_utils.h
+END
+essa.h
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/131/trunk/cg2011/p1.1/src/essa.h
+END
+orientation.h
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/128/trunk/cg2011/p1.1/src/orientation.h
+END
+segment.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/129/trunk/cg2011/p1.1/src/segment.cpp
+END
+enum.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/128/trunk/cg2011/p1.1/src/enum.cpp
+END
+intersection.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/136/trunk/cg2011/p1.1/src/intersection.cpp
+END
+segment.h
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/129/trunk/cg2011/p1.1/src/segment.h
+END
+enum.h
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/128/trunk/cg2011/p1.1/src/enum.h
+END
+intersection.h
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/128/trunk/cg2011/p1.1/src/intersection.h
+END
+test.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/129/trunk/cg2011/p1.1/src/test.cpp
+END
+main.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/135/trunk/cg2011/p1.1/src/main.cpp
+END
+point.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/129/trunk/cg2011/p1.1/src/point.cpp
+END
+priority_queue.h
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/128/trunk/cg2011/p1.1/src/priority_queue.h
+END
+double_utils.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/128/trunk/cg2011/p1.1/src/double_utils.cpp
+END
+orientation.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/136/trunk/cg2011/p1.1/src/orientation.cpp
+END

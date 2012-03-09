@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 38
+/svn/!svn/ver/126/trunk/old/problem1.2
+END
+failed-test.txt
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/126/trunk/old/problem1.2/failed-test.txt
+END
+last-message.txt
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/126/trunk/old/problem1.2/last-message.txt
+END
+main.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/126/trunk/old/problem1.2/main.cpp
+END
+problem1.2.vcxproj
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/126/trunk/old/problem1.2/problem1.2.vcxproj
+END
