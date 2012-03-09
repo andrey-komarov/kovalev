@@ -1,4 +1,0 @@
-big_int.cpp(245): warning C4244: 'initializing' : conversion from '__int64' to 'int', possible loss of data [X:\evaluator\export\problem1.4\problem1.4.vcxproj]
-
-[Generated at June 16, 2011 11:47:54 PM GMT+03:00]
-
