@@ -2,7 +2,6 @@
 
 int exponent(double d)
 {
-//	long long dd = reinterpret_cast<long long>(d);  // WTF??? Compile error
 	union
 	{
 		double double_;
