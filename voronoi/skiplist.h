@@ -11,6 +11,9 @@ struct skiplist
     void insert(const iterator& it, const T& value);
     void remove(const iterator& it);
 
+    template<typename Pred>
+    iterator lower_bound(const Pred&);
+
     iterator begin();
     iterator end();
 private:
@@ -21,15 +24,7 @@ private:
     typedef std::weak_ptr<node> wpnode;
 
     pnode zero, inf;
-
-
-    template<typename Pred>
-    friend
-    typename skiplist<T>::iterator lower_bound(const skiplist<T>& list, const Pred& p);
 };
-
-template<typename T, typename Pred>
-typename skiplist<T>::iterator lower_bound(const skiplist<T>& list, const Pred& p);
 
 #include "skiplist.hpp"
 #include "node.h"

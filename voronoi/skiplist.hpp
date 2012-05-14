@@ -15,7 +15,7 @@ skiplist<T>::skiplist() :
 template<typename T>
 auto skiplist<T>::begin() -> iterator
 {
-    return iterator(zero);
+    return iterator(zero->forward[0]);
 }
 
 template<typename T>
@@ -58,17 +58,15 @@ void skiplist<T>::remove(const iterator &it)
     }
 }
 
-template<typename T, typename Pred>
-typename skiplist<T>::iterator lower_bound(const skiplist<T>& list, const Pred& p)
+template<typename T>
+template<typename Pred>
+auto skiplist<T>::lower_bound(const Pred& p) -> iterator
 {
-    typedef typename skiplist<T>::pnode pnode;
-    typedef typename skiplist<T>::wpnode wpnode;
-    typedef typename skiplist<T>::iterator iterator;
-    pnode now = list.zero;
-    for (int depth = list.MAX_DEPTH - 1; depth >= 0; )
+    pnode now = zero;
+    for (int depth = MAX_DEPTH - 1; depth >= 0; )
     {
         pnode to = now->forward[depth];
-        if (to != list.inf && p(iterator(to)))
+        if (to != inf && p(iterator(to)))
             now = to;
         else
             depth--;
