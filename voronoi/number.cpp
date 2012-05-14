@@ -34,5 +34,5 @@ bool number::operator==(const number& n) const
 
 std::ostream& operator<<(std::ostream& out, const number& n)
 {
-    out << "[" << n.a << " " << (sgn(n.b) == -1 ? "-" : "+") << " √" << abs(n.b) << "]";
+    return out << "[" << n.a << " " << (sgn(n.b) == -1 ? "-" : "+") << " √" << abs(n.b) << "]";
 }

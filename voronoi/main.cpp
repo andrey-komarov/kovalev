@@ -1,9 +1,13 @@
+//#define private public
+
 #include <iostream>
 
 #include "number.h"
 #include <cassert>
 #include <cstdlib>
 #include <cmath>
+
+#include "skiplist.h"
 
 using namespace std;
 
@@ -15,27 +19,39 @@ int sgn(const T& a)
     return a < 0 ? - 1: 1;
 }
 
+
+template<typename Iterator>
+struct Cmp
+{
+    int cmp_with;
+    Cmp(const int& cmp_with) :
+        cmp_with(cmp_with)
+    {}
+
+    bool operator()(const Iterator& it) const
+    {
+        return *it < cmp_with;
+    }
+};
+
+typedef Cmp<typename skiplist<int>::iterator> Cmpp;
+
+#include <map>
+
 int main()
 {
-    srand(time(NULL));
-    int n  = 100;
-    while (true)
+    skiplist<int> a;
+
+    for (int i = 0; i < 1000000; i++)
     {
-        int a = rand() % n - n / 2;
-        int b = rand() % n - n / 2;
-        int c = rand() % n - n / 2;
-        int d = rand() % n - n / 2;
-        cerr << a << " " << b << " " << c << " " << d << "\n";
-        double d1 = a + sgn(b) * sqrt(abs(b));
-        double d2 = c + sgn(d) * sqrt(abs(d));
-        bool s1 = d1 < d2;
-        cerr << d1 << " " << d2 << " " << s1 << "\n";
-        number n1(a, b);
-        number n2(c, d);
-        bool s2 = n1 < n2;
-        cerr << n1 << " " << n2 << " " << s2 << "\n";
-        assert (s1 == s2);
-        assert (!((n1 == n2) ^ (d1 == d2)));
-        cerr << "========================\n";
+        int r = rand();
+        a.insert (lower_bound(a, Cmpp(r)), r);
     }
+
+//    map<int, int> heights;
+//    for (skiplist<int>::iterator i = a.begin (); i != a.end (); i++)
+//        heights[i.n.lock()->forward.size()]++;
+//    for (auto it : heights)
+//        cerr << it.first << " : " << it.second << "\n";
+//        cerr << *i << " ";
 }
